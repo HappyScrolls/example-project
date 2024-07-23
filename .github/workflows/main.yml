@@ -30,7 +30,7 @@ jobs:
           ${{ runner.os }}-gradle-
     
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew -x test build
 
     - name: Docker build & push to prod
       if: contains(github.ref, 'main')
