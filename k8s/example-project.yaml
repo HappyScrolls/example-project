@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-project-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-project
+  template:
+    metadata:
+      labels:
+        app: example-project
+    spec:
+      containers:
+      - name: example-project
+        image: hyuksoon/example-project
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8084
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-project
+spec:
+  selector:
+    app: example-project
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084
+      nodePort: 32000
+  type: NodePort
+
