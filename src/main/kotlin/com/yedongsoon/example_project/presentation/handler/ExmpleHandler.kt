@@ -23,9 +23,9 @@ class ExampleHandler(
         ServerResponse.noContent().buildAndAwait()
     }
 
-//    suspend fun getExample(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+    suspend fun getExample(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
 //        val exampleInfoNo = request.intQueryParam("exampleInfoNo")
 //        val summary = exampleQueryService.getExampleInfo(serviceHeader.no, exampleInfoNo)
-//        ServerResponse.ok().bodyValueAndAwait(ExampleInfoResponse.of(summary))
-//    }
+        ServerResponse.ok().bodyValueAndAwait("예동이 힘내! 사랑해 !")
+    }
 }

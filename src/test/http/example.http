@@ -1,4 +1,4 @@
-### 아이템 생성
+### 생성
 POST {{url}}/example
 Content-Type: application/json
 
@@ -6,3 +6,7 @@ Content-Type: application/json
   "name": "fdghjkgfhjgfhjgfhjg",
   "age": 1
 }
+
+### 조회
+GET {{url}}/example
+Content-Type: application/json
