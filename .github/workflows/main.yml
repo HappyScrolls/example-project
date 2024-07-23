@@ -37,7 +37,7 @@ jobs:
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:latest
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -66,4 +66,6 @@ jobs:
       run: echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
     - name: Deploy to Kubernetes
-      run: kubectl apply -f deployment-repo/k8s/example-project.yaml
+      run: |
+        sed -i "s|image: .*$|image: ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ github.sha }}|g" deployment-repo/k8s/example-project.yaml
+        kubectl apply -f deployment-repo/k8s/example-project.yaml
