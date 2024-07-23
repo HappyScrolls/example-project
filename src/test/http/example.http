@@ -1,0 +1,8 @@
+### 아이템 생성
+POST {{url}}/example
+Content-Type: application/json
+
+{
+  "name": "fdghjkgfhjgfhjgfhjg",
+  "age": 1
+}
