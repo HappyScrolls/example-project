@@ -32,12 +32,16 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew -x test build
 
+    - name: Extract build date
+      id: vars
+      run: echo "BUILD_DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
     - name: Docker build & push to prod
       if: contains(github.ref, 'main')
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
 
   deploy:
     runs-on: ubuntu-latest
