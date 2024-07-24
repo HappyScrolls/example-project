@@ -28,7 +28,7 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-    
+
     - name: Build with Gradle
       run: ./gradlew -x test build
 
@@ -40,7 +40,7 @@ jobs:
       if: contains(github.ref, 'main')
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }} .
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
 
   deploy:
@@ -71,5 +71,5 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        sed -i "s|image: .*$|image: ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ github.sha }}|g" deployment-repo/k8s/example-project.yaml
+        sed -i "s|image: .*$|image: ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}|g" deployment-repo/k8s/example-project.yaml
         kubectl apply -f deployment-repo/k8s/example-project.yaml
