@@ -71,5 +71,5 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        sed -i "s|image: .*$|image: ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}|g" deployment-repo/k8s/example-project.yaml
         kubectl apply -f deployment-repo/k8s/example-project.yaml
+        kubectl set image deployment/example-project-deployment example-project=${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
