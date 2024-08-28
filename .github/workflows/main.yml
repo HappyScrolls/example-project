@@ -1,5 +1,3 @@
-name: CI/CD Pipeline
-
 on:
   push:
     branches:
@@ -28,22 +26,21 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-    
+
     - name: Build with Gradle
       run: ./gradlew -x test build
+
+    - name: Extract build date
+      id: vars
+      run: echo "BUILD_DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
     - name: Docker build & push to prod
       if: contains(github.ref, 'main')
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:latest
+        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }} .
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -66,4 +63,6 @@ jobs:
       run: echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
     - name: Deploy to Kubernetes
-      run: kubectl apply -f deployment-repo/k8s/example-project.yaml
+      run: |
+        kubectl apply -f deployment-repo/k8s/example-project.yaml
+        kubectl set image deployment/example-project-deployment example-project=${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
