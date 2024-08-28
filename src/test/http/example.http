@@ -1,12 +1,13 @@
 ### 생성
 POST {{url}}/example
 Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
 {
-  "name": "fdghjkgfhjgfhjgfhjg",
   "age": 1
 }
 
 ### 조회
-GET {{url}}/example
+GET {{url}}/example?exampleInfoNo=3
 Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
