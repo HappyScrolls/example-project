@@ -30,3 +30,4 @@ fun ServerRequest.localDateQueryParam(parameter: String): LocalDate {
         LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     } ?: throw IllegalArgumentException()
 }
+
