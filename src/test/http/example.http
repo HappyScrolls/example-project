@@ -27,3 +27,8 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
   "scheduleEndAt": "2024-08-29T11:00:00",
   "scheduleAt": "2024-08-30"
 }
+
+### 특정 날짜 일정 조회
+GET {{url}}/schedule?searchDate=2024-08-15
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9

@@ -11,11 +11,14 @@ import org.springframework.web.reactive.function.server.coRouter
 @Configuration
 class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
     @Bean
-    fun scheduleRoute() : RouterFunction<ServerResponse>{
+    fun scheduleRoute(): RouterFunction<ServerResponse> {
         return coRouter {
             (accept(MediaType.APPLICATION_JSON) and "/schedule").nest {
                 // 일정 등록
                 POST("", scheduleHandler::createSchedule)
+
+                // 특정 날짜 일정 조회
+                GET("", scheduleHandler::readSchedule)
             }
         }
     }
