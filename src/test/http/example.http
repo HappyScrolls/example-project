@@ -11,3 +11,19 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 GET {{url}}/example?exampleInfoNo=3
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### 일정 등록
+POST {{url}}/schedule
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+{
+  "scheduleName": "일정 이름",
+  "scheduleLocation": "서울",
+  "scheduleWith": "예지",
+  "groupGenderType": "여",
+  "scheduleStartAt": "2024-08-29T10:00:00",
+  "scheduleEndAt": "2024-08-29T11:00:00",
+  "scheduleAt": "2024-08-30"
+}
