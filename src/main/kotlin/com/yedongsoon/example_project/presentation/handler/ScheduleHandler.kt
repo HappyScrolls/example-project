@@ -14,16 +14,16 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 import java.lang.IllegalArgumentException
 
 @Service
-class ScheduleHandler (
+class ScheduleHandler(
     private val scheduleCommandService: ScheduleCommandService
 ) {
     // 일정 등록
-    suspend fun createSchedule(request: ServerRequest) : ServerResponse = withContext(Dispatchers.IO){
+    suspend fun createSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         // 요청 body -> ScheduleCreateRequest -> ScheduleCreateCommand
         val command = request.awaitBodyOrNull<ScheduleCreateRequest>()
             ?.toCommand(memberHeader.no)
-            ?: throw IllegalArgumentException()
+            ?: throw IllegalArgumentException() // TODO : 커스텀 예외 변경 필요
 
         scheduleCommandService.createSchedule(command)
         ServerResponse.noContent().buildAndAwait()

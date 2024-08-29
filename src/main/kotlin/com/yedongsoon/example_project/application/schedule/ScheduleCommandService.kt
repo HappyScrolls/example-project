@@ -10,8 +10,7 @@ class ScheduleCommandService(
     private val scheduleRepository: ScheduleRepository
 ) {
     // 일정 등록
-    fun createSchedule(command: ScheduleCreateCommand){
+    fun createSchedule(command: ScheduleCreateCommand) {
         scheduleRepository.save(Schedule.create(command))
     }
-
 }
