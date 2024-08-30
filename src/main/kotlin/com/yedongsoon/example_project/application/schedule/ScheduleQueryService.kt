@@ -23,4 +23,8 @@ class ScheduleQueryService(private val scheduleRepository: ScheduleRepository) {
         return scheduleRepository.findByAccountNoAndScheduleNo(accountNo, scheduleNo)
     }
 
+    // 일정 존재 여부
+    fun existsByScheduleNo(scheduleNo: Int): Boolean{
+        return scheduleRepository.existsById(scheduleNo)
+    }
 }

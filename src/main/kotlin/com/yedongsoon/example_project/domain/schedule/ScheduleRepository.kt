@@ -9,4 +9,5 @@ interface ScheduleRepository : JpaRepository<Schedule, Int> {
 
     // 일정 상세 조회
     fun findByAccountNoAndScheduleNo(accountNo: Int, scheduleNo : Int) : Schedule
+
 }

@@ -38,3 +38,7 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 GET {{url}}/schedule/6
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+### 일정 삭제
+DELETE {{url}}/schedule/7
+Content-Type: application/json

@@ -3,6 +3,7 @@ package com.yedongsoon.example_project.presentation.handler
 import com.yedongsoon.example_project.application.schedule.ScheduleCommandService
 import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
+import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.intQueryParam
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
 import com.yedongsoon.example_project.presentation.handler.model.ExampleDetailResponse
@@ -41,12 +42,25 @@ class ScheduleHandler(
     }
 
     // 일정 상세 조회
-    suspend fun readScheduleDetail(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO){
+    suspend fun readScheduleDetail(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
 //        val scheduleNo = request.intQueryParam("scheduleNo")
         val scheduleNo = request.pathVariable("scheduleNo").toIntOrNull()
             ?: throw IllegalArgumentException("Invalid or missing 'scheduleNo' path variable")
         val result = scheduleQueryService.getScheduleByScheduleNo(memberHeader.no, scheduleNo)
         ServerResponse.ok().bodyValueAndAwait(ScheduleDetailResponse.from(result))
+    }
+
+    // 일정 삭제
+    suspend fun deleteSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+
+        val isScheduleExists = scheduleQueryService.existsByScheduleNo(scheduleNo)
+        if (!isScheduleExists) {
+            return@withContext ServerResponse.status(404).bodyValueAndAwait("삭제하려는 일정이 존재하지 않습니다.")
+        }
+
+        scheduleCommandService.deleteSchedule(scheduleNo)
+        ServerResponse.ok().bodyValueAndAwait("일정이 성공적으로 삭제되었습니다.")
     }
 }

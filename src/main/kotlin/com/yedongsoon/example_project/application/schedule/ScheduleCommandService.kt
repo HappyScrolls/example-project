@@ -13,4 +13,9 @@ class ScheduleCommandService(
     fun createSchedule(command: ScheduleCreateCommand) {
         scheduleRepository.save(Schedule.create(command))
     }
+
+    // 일정 삭제
+    fun deleteSchedule(scheduleNo : Int){
+        scheduleRepository.deleteById(scheduleNo)
+    }
 }
