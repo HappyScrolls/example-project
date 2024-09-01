@@ -28,3 +28,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 server:
   port: 8084
+
+
+couple:
+  service:
+    url: http://158.247.198.100:32002
