@@ -1,5 +1,6 @@
 package com.yedongsoon.example_project.presentation.extension
 
+import com.yedongsoon.example_project.application.exception.ExampleBadRequestException
 import com.yedongsoon.example_project.domain.extension.decodeBase64ToDto
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.queryParamOrNull
@@ -25,9 +26,13 @@ fun ServerRequest.intQueryParam(parameter: String): Int {
         ?: throw IllegalArgumentException("Invalid or missing 'itemNo' query parameter")
 }
 
+
 fun ServerRequest.localDateQueryParam(parameter: String): LocalDate {
     return queryParamOrNull(parameter)?.let {
         LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     } ?: throw IllegalArgumentException()
 }
 
+fun ServerRequest.extractRawMemberCodeHeader(): String {
+    return headers().header("Member-Code").firstOrNull() ?: throw ExampleBadRequestException("헤더 없음")
+}
