@@ -2,6 +2,7 @@ package com.yedongsoon.example_project.infrastructure.couple
 
 import com.yedongsoon.example_project.application.couple.CoupleService
 import com.yedongsoon.example_project.application.couple.model.CoupleDetailResponse
+import com.yedongsoon.example_project.application.couple.model.CouplePartnerResponse
 import kotlinx.coroutines.reactor.awaitSingle
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -29,6 +30,22 @@ class CoupleAdapter(private val webClient: WebClient
                     .awaitSingle()
         } catch (e: Exception) {
             logger.error("Error while fetching couple details for Member-Code: $memberHeader", e)
+            throw e
+        }
+    }
+
+    // 내 상대방 조회
+    override suspend fun getCouplePartnerInfo(memberHeader :String):CouplePartnerResponse{
+        return try {
+            webClient.get()
+                .uri("$coupleServiceUrl/couple/lover")
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .header("Member-Code", memberHeader)
+                .retrieve()
+                .bodyToMono<CouplePartnerResponse>()
+                .awaitSingle()
+        } catch (e: Exception) {
+            logger.error("Error while fetching couple partner details for Member-Code: $memberHeader", e)
             throw e
         }
     }

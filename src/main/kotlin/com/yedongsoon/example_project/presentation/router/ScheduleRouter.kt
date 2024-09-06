@@ -18,10 +18,13 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                 POST("", scheduleHandler::createSchedule)
 
                 // 특정 날짜 일정 조회
-                GET("", scheduleHandler::readSchedule)
+                GET("", scheduleHandler::readSchedules)
 
                 // 일정 상세 조회
-                GET("/{scheduleNo}", scheduleHandler::readScheduleDetail)
+                GET("/detail/{scheduleNo}", scheduleHandler::readScheduleDetail)
+
+                // (커플) 특정 날짜 일정 조회
+                GET("/couple", scheduleHandler::readCouplePartnerSchedules)
             }
         }
     }
