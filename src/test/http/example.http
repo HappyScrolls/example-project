@@ -11,3 +11,39 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 GET {{url}}/example?exampleInfoNo=3
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### 일정 등록
+POST {{url}}/schedule
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+{
+  "scheduleName": "일정 1",
+  "scheduleLocation": "서울",
+  "scheduleWith": "예지동",
+  "groupGenderType": "여",
+  "scheduleStartAt": "2024-08-29T10:00:00",
+  "scheduleEndAt": "2024-08-29T11:00:00",
+  "scheduleAt": "2024-09-02"
+}
+
+### 특정 날짜 일정 조회
+GET {{url}}/schedule?searchDate=2024-09-07
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### 일정 상세 조회
+GET {{url}}/schedule/detail/1
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+### (커플) 특정 날짜 일정 조회
+GET {{url}}/schedule/couple?searchDate=2024-09-02
+Content-Type: application/json
+Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+### 일정 삭제
+DELETE {{url}}/schedule/7
+Content-Type: application/json
