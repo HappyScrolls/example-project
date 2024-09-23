@@ -1,14 +1,16 @@
 package com.yedongsoon.example_project.application.schedule
 
+import com.yedongsoon.example_project.application.couple.CoupleService
 import com.yedongsoon.example_project.domain.schedule.Schedule
 import com.yedongsoon.example_project.domain.schedule.ScheduleRepository
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
-import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class ScheduleQueryService(private val scheduleRepository: ScheduleRepository) {
+class ScheduleQueryService(
+    private val scheduleRepository: ScheduleRepository,
+) {
 
     // 특정 날짜 일정 조회
     fun getScheduleByDate(accountNo: Int, searchDate: LocalDate): List<ScheduleDetailResponse> {
