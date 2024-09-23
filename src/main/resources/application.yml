@@ -21,7 +21,7 @@ spring:
     cache-prep-stmts: true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -32,4 +32,4 @@ server:
 
 couple:
   service:
-    url: https://f3badfd3-b053-4d58-a6cd-5105bbed9015.mock.pstmn.io
+    url: http://158.247.198.100:32002

@@ -22,7 +22,7 @@ class CoupleAdapter(private val webClient: WebClient
     override suspend fun getCoupleDetail(memberHeader: String): CoupleDetailResponse {
         return try {
             webClient.get()
-                    .uri("$coupleServiceUrl/couple/detail")
+                    .uri("$coupleServiceUrl/account-service/couple/detail")
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
                     .header("Member-Code", memberHeader)
                     .retrieve()
@@ -35,15 +35,15 @@ class CoupleAdapter(private val webClient: WebClient
     }
 
     // 내 상대방 조회
-    override suspend fun getCouplePartnerInfo(memberHeader :String):CouplePartnerResponse{
+    override suspend fun getCouplePartnerInfo(memberHeader: String): CouplePartnerResponse {
         return try {
             webClient.get()
-                .uri("$coupleServiceUrl/couple/lover")
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .header("Member-Code", memberHeader)
-                .retrieve()
-                .bodyToMono<CouplePartnerResponse>()
-                .awaitSingle()
+                    .uri("$coupleServiceUrl/account-service/couple/lover")
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .header("Member-Code", memberHeader)
+                    .retrieve()
+                    .bodyToMono<CouplePartnerResponse>()
+                    .awaitSingle()
         } catch (e: Exception) {
             logger.error("Error while fetching couple partner details for Member-Code: $memberHeader", e)
             throw e
