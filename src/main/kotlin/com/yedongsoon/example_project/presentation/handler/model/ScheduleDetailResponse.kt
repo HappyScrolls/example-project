@@ -4,16 +4,24 @@ import com.yedongsoon.example_project.domain.schedule.Schedule
 import java.time.LocalDateTime
 
 data class ScheduleDetailResponse(
-    val scheduleName: String,
-    val scheduleStartAt: LocalDateTime,
-    val scheduleEndAt: LocalDateTime
+        val busyLevel: String,
+        val scheduleName: String,
+        val scheduleLocation: String,
+        val scheduleWith: String,
+        val scheduleStartAt: LocalDateTime,
+        val scheduleEndAt: LocalDateTime,
+        val isCommon: Boolean,
 ) {
     companion object {
         // 특정 일정 조회 (엔티티 -> response)
         fun from(schedule: Schedule) = ScheduleDetailResponse(
-            scheduleName = schedule.scheduleName,
-            scheduleStartAt = schedule.scheduleStartAt,
-            scheduleEndAt = schedule.scheduleEndAt
+                busyLevel = schedule.busyLevel,
+                scheduleName = schedule.scheduleName,
+                scheduleLocation = schedule.scheduleLocation,
+                scheduleWith = schedule.scheduleWith,
+                scheduleStartAt = schedule.scheduleStartAt,
+                scheduleEndAt = schedule.scheduleEndAt,
+                isCommon = schedule.isCommon,
         )
     }
 }

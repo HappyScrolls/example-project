@@ -4,34 +4,28 @@ import com.yedongsoon.example_project.application.couple.CoupleService
 import com.yedongsoon.example_project.application.schedule.ScheduleCommandService
 import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
-import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.extractRawMemberCodeHeader
-import com.yedongsoon.example_project.presentation.extension.intQueryParam
+import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
-import com.yedongsoon.example_project.presentation.handler.model.ExampleDetailResponse
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleCreateRequest
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.apache.commons.logging.Log
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.server.*
-import java.lang.IllegalArgumentException
-import java.time.LocalDate
 
 @Service
 class ScheduleHandler(
-    private val scheduleCommandService: ScheduleCommandService,
-    private val scheduleQueryService: ScheduleQueryService,
-    private val coupleService: CoupleService
+        private val scheduleCommandService: ScheduleCommandService,
+        private val scheduleQueryService: ScheduleQueryService,
+        private val coupleService: CoupleService
 ) {
     // 일정 등록
     suspend fun createSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
-        // 요청 body -> ScheduleCreateRequest -> ScheduleCreateCommand
         val command = request.awaitBodyOrNull<ScheduleCreateRequest>()
-            ?.toCommand(memberHeader.no)
-            ?: throw IllegalArgumentException() // TODO : 커스텀 예외 변경 필요
+                ?.toCommand(memberHeader.no)
+                ?: throw IllegalArgumentException() // TODO : 커스텀 예외 변경 필요
 
         scheduleCommandService.createSchedule(command)
         ServerResponse.noContent().buildAndAwait()
@@ -49,7 +43,7 @@ class ScheduleHandler(
     suspend fun readScheduleDetail(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val scheduleNo = request.pathVariable("scheduleNo").toIntOrNull()
-            ?: throw IllegalArgumentException("Invalid or missing 'scheduleNo' path variable")
+                ?: throw IllegalArgumentException("Invalid or missing 'scheduleNo' path variable")
         val result = scheduleQueryService.getScheduleByScheduleNo(memberHeader.no, scheduleNo)
         ServerResponse.ok().bodyValueAndAwait(ScheduleDetailResponse.from(result))
     }
@@ -58,10 +52,11 @@ class ScheduleHandler(
     suspend fun readCouplePartnerSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractRawMemberCodeHeader()
         val couplePartnerResponse = coupleService.getCouplePartnerInfo(memberHeader)
+        println("couplePartnerResponse = ${couplePartnerResponse}")
         val partnerNo = couplePartnerResponse.no
         val searchDate = request.localDateQueryParam("searchDate")
 
-        val result = scheduleQueryService.getScheduleByDate(partnerNo, searchDate)
+        val result = scheduleQueryService.getScheduleByDateExceptCommon(partnerNo, searchDate)
 
         ServerResponse.ok().bodyValueAndAwait(result)
     }
