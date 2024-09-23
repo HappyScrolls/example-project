@@ -36,6 +36,8 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient:3.0.0")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("com.epages:restdocs-api-spec-openapi3-generator:0.17.1")
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.97.Final:osx-aarch_64")
+
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

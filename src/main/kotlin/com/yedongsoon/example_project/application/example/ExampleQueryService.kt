@@ -1,15 +1,28 @@
 package com.yedongsoon.example_project.application.example
 
+import com.yedongsoon.example_project.application.couple.CoupleService
+import com.yedongsoon.example_project.application.couple.model.CouplePartnerResponse
+import com.yedongsoon.example_project.application.exception.ExampleNotFoundException
 import com.yedongsoon.example_project.domain.example.Example
 import com.yedongsoon.example_project.domain.example.ExampleRepository
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
+import com.yedongsoon.example_project.domain.schedule.Schedule
+import com.yedongsoon.example_project.infrastructure.couple.CoupleAdapter
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class ExampleQueryService(
-        private val exampleRepository: ExampleRepository,
+    private val exampleRepository: ExampleRepository,
+    private val coupleService: CoupleService,
 ) {
-    fun getExampleInfo(name: String, exampleInfoNo: Int): Example {
-        return exampleRepository.findByNameAndNo(name, exampleInfoNo) ?: throw NotFoundException()
+    private val logger = LoggerFactory.getLogger(CoupleAdapter::class.java)
+    suspend fun getExampleInfo(exampleInfoNo: Int, memberHeader: String): Example {
+        val coupleDetail = coupleService.getCoupleDetail(memberHeader)
+        logger.info(coupleDetail.name)
+
+        return exampleRepository.findByNo(exampleInfoNo) ?: throw ExampleNotFoundException("없음")
+
     }
+
+
 }

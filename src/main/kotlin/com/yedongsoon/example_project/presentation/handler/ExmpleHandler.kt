@@ -3,6 +3,7 @@ package com.yedongsoon.example_project.presentation.handler
 import com.yedongsoon.example_project.application.example.ExampleCommandService
 import com.yedongsoon.example_project.application.example.ExampleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
+import com.yedongsoon.example_project.presentation.extension.extractRawMemberCodeHeader
 import com.yedongsoon.example_project.presentation.extension.intQueryParam
 import com.yedongsoon.example_project.presentation.handler.model.ExampleCreateRequest
 import com.yedongsoon.example_project.presentation.handler.model.ExampleDetailResponse
@@ -27,9 +28,9 @@ class ExampleHandler(
     }
 
     suspend fun getExample(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
-        val memberHeader = request.extractMemberCodeHeader()
+        val memberHeader = request.extractRawMemberCodeHeader()
         val exampleInfoNo = request.intQueryParam("exampleInfoNo")
-        val result = exampleQueryService.getExampleInfo(memberHeader.name, exampleInfoNo)
+        val result = exampleQueryService.getExampleInfo(exampleInfoNo, memberHeader)
         ServerResponse.ok().bodyValueAndAwait(ExampleDetailResponse.from(result))
     }
 }
