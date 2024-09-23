@@ -9,21 +9,21 @@ import java.time.format.DateTimeFormatter
 
 fun ServerRequest.extractMemberCodeHeader(): MemberHeader {
     return headers().header("Member-Code").firstOrNull()
-        ?.let {
-            it.decodeBase64ToDto<MemberHeader>()
-        } ?: throw IllegalArgumentException()
+            ?.let {
+                it.decodeBase64ToDto<MemberHeader>()
+            } ?: throw IllegalArgumentException()
 }
 
 fun ServerRequest.extractServiceCodeHeader(): ServiceHeader {
     return headers().header("Service-Code").firstOrNull()
-        ?.let {
-            it.decodeBase64ToDto<ServiceHeader>()
-        } ?: throw IllegalArgumentException()
+            ?.let {
+                it.decodeBase64ToDto<ServiceHeader>()
+            } ?: throw IllegalArgumentException()
 }
 
 fun ServerRequest.intQueryParam(parameter: String): Int {
     return queryParamOrNull(parameter)?.toIntOrNull()
-        ?: throw IllegalArgumentException("Invalid or missing 'itemNo' query parameter")
+            ?: throw IllegalArgumentException("Invalid or missing 'itemNo' query parameter")
 }
 
 
@@ -40,7 +40,7 @@ fun ServerRequest.extractRawMemberCodeHeader(): String {
 // Path Variable
 fun ServerRequest.intPathVariable(variable: String): Int {
     return pathVariable(variable).toIntOrNull()
-        ?: throw IllegalArgumentException("Invalid or missing '$variable' path variable")
+            ?: throw IllegalArgumentException("Invalid or missing '$variable' path variable")
 }
 
 fun ServerRequest.localDatePathVariable(variable: String): LocalDate {

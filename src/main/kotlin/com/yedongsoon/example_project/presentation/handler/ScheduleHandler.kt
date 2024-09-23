@@ -4,6 +4,7 @@ import com.yedongsoon.example_project.application.couple.CoupleService
 import com.yedongsoon.example_project.application.schedule.ScheduleCommandService
 import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
+import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.extractRawMemberCodeHeader
 import com.yedongsoon.example_project.presentation.extension.intQueryParam
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
@@ -63,5 +64,18 @@ class ScheduleHandler(
         val result = scheduleQueryService.getScheduleByDate(partnerNo, searchDate)
 
         ServerResponse.ok().bodyValueAndAwait(result)
+    }
+
+    // 일정 삭제
+    suspend fun deleteSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+
+        val isScheduleExists = scheduleQueryService.existsByScheduleNo(scheduleNo)
+        if (!isScheduleExists) {
+            return@withContext ServerResponse.status(404).bodyValueAndAwait("삭제하려는 일정이 존재하지 않습니다.")
+        }
+
+        scheduleCommandService.deleteSchedule(scheduleNo)
+        ServerResponse.ok().bodyValueAndAwait("일정이 성공적으로 삭제되었습니다.")
     }
 }

@@ -25,6 +25,8 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
 
                 // (커플) 특정 날짜 일정 조회
                 GET("/couple", scheduleHandler::readCouplePartnerSchedules)
+                // 일정 삭제
+                DELETE("/{scheduleNo}", scheduleHandler::deleteSchedule)
             }
         }
     }
