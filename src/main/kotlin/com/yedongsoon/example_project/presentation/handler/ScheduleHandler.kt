@@ -73,4 +73,13 @@ class ScheduleHandler(
         scheduleCommandService.deleteSchedule(scheduleNo)
         ServerResponse.ok().bodyValueAndAwait("일정이 성공적으로 삭제되었습니다.")
     }
+
+    suspend fun changeStatus(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+        val status = request.queryParamOrNull("status")
+                ?: throw IllegalArgumentException("Invalid or missing 'status' path variable")
+
+        scheduleCommandService.changeStatus(scheduleNo, status)
+        ServerResponse.ok().buildAndAwait()
+    }
 }
