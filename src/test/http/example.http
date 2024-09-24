@@ -49,3 +49,7 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 ### 일정 삭제
 DELETE {{url}}/schedule/7
 Content-Type: application/json
+
+### 일정 삭제
+PUT {{url}}/schedule/7/status?status=종료
+Content-Type: application/json

@@ -47,7 +47,7 @@ class Schedule(
 
         ) {
     @Convert(converter = BooleanToYNConverter::class)
-    @Column(name = "delete_yn")
+    @Column(name = "deleted_yn")
     var isDeleted: Boolean = false
         private set
 
