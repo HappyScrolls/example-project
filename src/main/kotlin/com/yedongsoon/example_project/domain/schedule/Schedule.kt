@@ -43,8 +43,22 @@ class Schedule(
         val isCommon: Boolean,
 
         @Column(name = "schedule_at")
-        var scheduleAt: LocalDate
-) {
+        var scheduleAt: LocalDate,
+
+        ) {
+    @Convert(converter = BooleanToYNConverter::class)
+    @Column(name = "delete_yn")
+    var isDeleted: Boolean = false
+        private set
+
+    @Column(name = "status")
+    var status: String = "예정"
+        private set
+
+    fun changeStatus(status: String) {
+        this.status = status
+    }
+
     companion object {
         // 일정 등록 (command -> Schedule)
         fun create(command: ScheduleCreateCommand) = Schedule(
