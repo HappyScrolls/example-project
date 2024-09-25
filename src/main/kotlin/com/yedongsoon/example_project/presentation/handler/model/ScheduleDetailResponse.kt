@@ -4,6 +4,7 @@ import com.yedongsoon.example_project.domain.schedule.Schedule
 import java.time.LocalDateTime
 
 data class ScheduleDetailResponse(
+        val scheduleNo: Int,
         val busyLevel: String,
         val scheduleName: String,
         val scheduleLocation: String,
@@ -16,6 +17,7 @@ data class ScheduleDetailResponse(
     companion object {
         // 특정 일정 조회 (엔티티 -> response)
         fun from(schedule: Schedule) = ScheduleDetailResponse(
+                scheduleNo = schedule.scheduleNo,
                 busyLevel = schedule.busyLevel,
                 scheduleName = schedule.scheduleName,
                 scheduleLocation = schedule.scheduleLocation,
