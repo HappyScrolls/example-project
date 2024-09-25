@@ -52,7 +52,6 @@ class ScheduleHandler(
     suspend fun readCouplePartnerSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractRawMemberCodeHeader()
         val couplePartnerResponse = coupleService.getCouplePartnerInfo(memberHeader)
-        println("couplePartnerResponse = ${couplePartnerResponse}")
         val partnerNo = couplePartnerResponse.no
         val searchDate = request.localDateQueryParam("searchDate")
 
