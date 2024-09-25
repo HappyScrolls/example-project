@@ -52,7 +52,7 @@ class Schedule(
         private set
 
     @Column(name = "status")
-    var status: String = "예정"
+    var status: String = "미완료"
         private set
 
     fun changeStatus(status: String) {
