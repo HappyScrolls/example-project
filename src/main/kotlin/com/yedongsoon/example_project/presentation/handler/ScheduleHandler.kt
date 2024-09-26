@@ -35,7 +35,7 @@ class ScheduleHandler(
     suspend fun readSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val searchDate = request.localDateQueryParam("searchDate")
-        val result = scheduleQueryService.getScheduleByDate(memberHeader.no, searchDate)
+        val result = scheduleQueryService.getScheduleByDateExceptCommon(memberHeader.no, searchDate)
         ServerResponse.ok().bodyValueAndAwait(result)
     }
 
@@ -56,6 +56,19 @@ class ScheduleHandler(
         val searchDate = request.localDateQueryParam("searchDate")
 
         val result = scheduleQueryService.getScheduleByDateExceptCommon(partnerNo, searchDate)
+
+        ServerResponse.ok().bodyValueAndAwait(result)
+    }
+
+    suspend fun getCommonSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val memberHeader = request.extractRawMemberCodeHeader()
+        val memberInfo = request.extractMemberCodeHeader()
+
+        val couplePartnerResponse = coupleService.getCouplePartnerInfo(memberHeader)
+        val partnerNo = couplePartnerResponse.no
+        val searchDate = request.localDateQueryParam("searchDate")
+
+        val result = scheduleQueryService.getCommonScheduleByDate(memberInfo.no, partnerNo, searchDate)
 
         ServerResponse.ok().bodyValueAndAwait(result)
     }
