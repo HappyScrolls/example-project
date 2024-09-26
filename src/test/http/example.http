@@ -31,7 +31,7 @@ Member-Code: eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 }
 
 ### 특정 날짜 일정 조회
-GET {{url}}/schedule?searchDate=2024-09-02
+GET {{url}}/schedule?searchDate=2024-09-26
 Content-Type: application/json
 Member-Code: eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
@@ -42,7 +42,7 @@ Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
 ### (커플) 특정 날짜 일정 조회
-GET {{url}}/schedule/couple?searchDate=2024-09-02
+GET {{url}}/schedule/couple?searchDate=2024-09-26
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 

@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 
 data class ScheduleDetailResponse(
         val scheduleNo: Int,
+        val accountNo: Int,
         val busyLevel: String,
         val scheduleName: String,
         val scheduleLocation: String,
@@ -18,6 +19,7 @@ data class ScheduleDetailResponse(
         // 특정 일정 조회 (엔티티 -> response)
         fun from(schedule: Schedule) = ScheduleDetailResponse(
                 scheduleNo = schedule.scheduleNo,
+                accountNo = schedule.accountNo,
                 busyLevel = schedule.busyLevel,
                 scheduleName = schedule.scheduleName,
                 scheduleLocation = schedule.scheduleLocation,
