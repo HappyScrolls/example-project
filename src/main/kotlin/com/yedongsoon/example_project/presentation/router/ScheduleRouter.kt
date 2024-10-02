@@ -31,8 +31,6 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                 DELETE("/{scheduleNo}", scheduleHandler::deleteSchedule)
                 PUT("/{scheduleNo}/status", scheduleHandler::changeStatus)
                 PUT("/{scheduleNo}/common-schedule", scheduleHandler::setToCommonSchedule)
-                PUT("/{scheduleNo}/status", scheduleHandler::changeStatus)
-
             }
         }
     }
