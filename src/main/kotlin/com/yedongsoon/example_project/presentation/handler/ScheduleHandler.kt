@@ -94,4 +94,11 @@ class ScheduleHandler(
         scheduleCommandService.changeStatus(scheduleNo, status)
         ServerResponse.ok().buildAndAwait()
     }
+
+    suspend fun setToCommonSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+
+        scheduleCommandService.setToCommonSchedule(scheduleNo)
+        ServerResponse.ok().buildAndAwait()
+    }
 }

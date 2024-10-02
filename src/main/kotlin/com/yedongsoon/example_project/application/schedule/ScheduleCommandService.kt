@@ -27,4 +27,11 @@ class ScheduleCommandService(
             scheduleRepository.save(it)
         } ?: throw ScheduleNotFoundException("존재하지 않습니다")
     }
+
+    fun setToCommonSchedule(scheduleNo: Int) {
+        scheduleRepository.findByIdOrNull(scheduleNo)?.let {
+            it.toCommon()
+            scheduleRepository.save(it)
+        } ?: throw ScheduleNotFoundException("존재하지 않습니다")
+    }
 }
