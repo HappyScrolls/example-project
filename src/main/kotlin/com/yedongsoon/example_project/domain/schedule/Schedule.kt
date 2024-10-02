@@ -38,14 +38,18 @@ class Schedule(
         @Column(name = "schedule_end_at")
         var scheduleEndAt: LocalDateTime,
 
-        @Convert(converter = BooleanToYNConverter::class)
-        @Column(name = "is_common")
-        val isCommon: Boolean,
+        isCommon: Boolean,
 
         @Column(name = "schedule_at")
         var scheduleAt: LocalDate,
 
         ) {
+
+    @Convert(converter = BooleanToYNConverter::class)
+    @Column(name = "is_common")
+    var isCommon: Boolean = isCommon
+        private set
+
     @Convert(converter = BooleanToYNConverter::class)
     @Column(name = "deleted_yn")
     var isDeleted: Boolean = false
@@ -57,6 +61,10 @@ class Schedule(
 
     fun changeStatus(status: String) {
         this.status = status
+    }
+
+    fun toCommon() {
+        this.isCommon = true
     }
 
     companion object {
