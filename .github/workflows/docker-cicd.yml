@@ -54,23 +54,16 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SERVER_SECRET }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-      - name: Add SSH key to known hosts
-        run: ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Deploy to production
+        env:
+          BUILD_DATE: ${{ env.BUILD_DATE }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          SSH_PASSWORD: ?Gg8XeD$y*!e2S{F
         run: |
-          # 환경 변수 설정
-          export BUILD_DATE=${{ env.BUILD_DATE }}
-          export DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
-
-          # SSH를 통해 서버에 배포 스크립트 실행
-          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_HOST }} << "EOF"
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_HOST }} << EOF
             docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
             docker pull $DOCKER_HUB_USERNAME/example-project:$BUILD_DATE
             if [ \$(docker ps -q) ]; then
