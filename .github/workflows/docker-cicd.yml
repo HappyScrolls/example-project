@@ -65,7 +65,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
               docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
-              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
+              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
               
               # 실행 중인 'example-project' 컨테이너 중지 및 제거
               existing_container=$(docker ps -q --filter "ancestor=${{ secrets.DOCKER_HUB_USERNAME }}/example-project")
@@ -74,5 +74,5 @@ jobs:
               fi
         
               # 새로운 컨테이너 실행
-              docker run -d --network app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
-              
+              docker run -d --network app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
+              docker image prune -f
