@@ -28,7 +28,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
@@ -61,9 +60,9 @@ jobs:
         env:
           BUILD_DATE: ${{ env.BUILD_DATE }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          SSH_PASSWORD: ?Gg8XeD$y*!e2S{F
+          SSH_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_HOST }} << EOF
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_HOST }} << "EOF"
             docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
             docker pull $DOCKER_HUB_USERNAME/example-project:$BUILD_DATE
             if [ \$(docker ps -q) ]; then
