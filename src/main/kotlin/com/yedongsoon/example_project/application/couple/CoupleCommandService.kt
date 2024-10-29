@@ -48,7 +48,7 @@ class CoupleCommandService(
 
     suspend fun createInviteCode(memberNo: Int): String {
         val code = memberNo.toString() + LocalDateTime.now()
-        redisTemplate.opsForValue().setAndAwait(code.encodeDtoToBase64(), memberNo.toString(), Duration.ofMinutes(5))
+        redisTemplate.opsForValue().setAndAwait(code.encodeDtoToBase64(), memberNo.toString(), Duration.ofDays(1))
         return code.encodeDtoToBase64()
     }
 }
