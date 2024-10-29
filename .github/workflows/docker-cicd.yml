@@ -46,8 +46,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }} .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
 
   deploy:
     needs: build-and-push
