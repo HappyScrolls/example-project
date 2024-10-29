@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
     kotlin("plugin.jpa") version "1.9.24"
+    kotlin("kapt") version "1.5.31"
 }
 
 group = "com.yedongsoon"
@@ -37,6 +38,24 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
+}
+
+kapt {
+    arguments {
+        arg("querydsl.entityAccessors", "true")
+        arg("querydsl.useFields", "false") // 필드 대신 getter/setter를 사용하는 옵션
+    }
+}
+
+// QueryDSL로 생성된 QClass의 경로 설정
+sourceSets {
+    main {
+        java.srcDir("build/generated/source/kapt/main")
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

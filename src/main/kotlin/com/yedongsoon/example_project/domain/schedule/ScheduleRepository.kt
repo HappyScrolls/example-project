@@ -3,7 +3,7 @@ package com.yedongsoon.example_project.domain.schedule
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDate
 
-interface ScheduleRepository : JpaRepository<Schedule, Int> {
+interface ScheduleRepository : JpaRepository<Schedule, Int>, ScheduleRepositoryCustom {
     // 특정 일정 조회
     fun findByAccountNoAndScheduleAtAndIsCommonIsFalse(accountNo: Int, scheduleAt: LocalDate): List<Schedule>
     fun findByAccountNoInAndScheduleAtAndIsCommonIsTrue(accountNos: List<Int>, scheduleAt: LocalDate): List<Schedule>
