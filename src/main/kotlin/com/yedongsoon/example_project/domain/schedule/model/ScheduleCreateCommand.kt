@@ -1,4 +1,4 @@
-package com.yedongsoon.example_project.application.schedule.model
+package com.yedongsoon.example_project.domain.schedule.model
 
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -1,14 +1,16 @@
 package com.yedongsoon.example_project.presentation.handler
 
-import com.yedongsoon.example_project.application.couple.CoupleService
-import com.yedongsoon.example_project.application.schedule.ScheduleCommandService
-import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
+import com.yedongsoon.example_project.application.couple.CoupleQueryService
+import com.yedongsoon.example_project.domain.schedule.ScheduleCommandService
+import com.yedongsoon.example_project.domain.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
-import com.yedongsoon.example_project.presentation.extension.extractRawMemberCodeHeader
 import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleCreateRequest
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
@@ -18,9 +20,14 @@ import org.springframework.web.reactive.function.server.*
 class ScheduleHandler(
         private val scheduleCommandService: ScheduleCommandService,
         private val scheduleQueryService: ScheduleQueryService,
-        private val coupleService: CoupleService
+        private val coupleQueryService: CoupleQueryService,
 ) {
     // 일정 등록
+    @Operation(summary = "스케줄 생성", description = "새로운 스케줄을 생성합니다.")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "204", description = "스케줄 생성 성공"),
+        ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
+    ])
     suspend fun createSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<ScheduleCreateRequest>()
@@ -50,9 +57,8 @@ class ScheduleHandler(
 
     // (커플) 특정 날짜의 일정 조회
     suspend fun readCouplePartnerSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
-        val memberHeader = request.extractRawMemberCodeHeader()
-        val couplePartnerResponse = coupleService.getCouplePartnerInfo(memberHeader)
-        val partnerNo = couplePartnerResponse.no
+        val memberHeader = request.extractMemberCodeHeader()
+        val partnerNo = coupleQueryService.getLover(memberHeader.no).no
         val searchDate = request.localDateQueryParam("searchDate")
 
         val result = scheduleQueryService.getScheduleByDateExceptCommon(partnerNo, searchDate)
@@ -61,11 +67,9 @@ class ScheduleHandler(
     }
 
     suspend fun getCommonSchedules(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
-        val memberHeader = request.extractRawMemberCodeHeader()
         val memberInfo = request.extractMemberCodeHeader()
 
-        val couplePartnerResponse = coupleService.getCouplePartnerInfo(memberHeader)
-        val partnerNo = couplePartnerResponse.no
+        val partnerNo = coupleQueryService.getLover(memberInfo.no).no
         val searchDate = request.localDateQueryParam("searchDate")
 
         val result = scheduleQueryService.getCommonScheduleByDate(memberInfo.no, partnerNo, searchDate)

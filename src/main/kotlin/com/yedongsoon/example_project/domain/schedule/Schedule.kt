@@ -1,7 +1,7 @@
 package com.yedongsoon.example_project.domain.schedule
 
-import com.yedongsoon.example_project.application.schedule.model.ScheduleCreateCommand
 import com.yedongsoon.example_project.domain.extension.BooleanToYNConverter
+import com.yedongsoon.example_project.domain.schedule.model.ScheduleCreateCommand
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -15,9 +15,9 @@ spring:
             read-timeout: 4000
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://158.247.198.100:32009/service?autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: jdbc:mysql://158.247.197.4:13306/yedongsoon?autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: hyuksoon
+    password: hs0103
     cache-prep-stmts: true
   jpa:
     hibernate:
@@ -33,3 +33,8 @@ server:
 couple:
   service:
     url: http://158.247.198.100:32002
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs

@@ -1,9 +1,7 @@
-package com.yedongsoon.example_project.application.schedule
+package com.yedongsoon.example_project.domain.schedule
 
 import com.yedongsoon.example_project.application.exception.ScheduleNotFoundException
-import com.yedongsoon.example_project.application.schedule.model.ScheduleCreateCommand
-import com.yedongsoon.example_project.domain.schedule.Schedule
-import com.yedongsoon.example_project.domain.schedule.ScheduleRepository
+import com.yedongsoon.example_project.domain.schedule.model.ScheduleCreateCommand
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
