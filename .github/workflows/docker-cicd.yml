@@ -66,9 +66,9 @@ jobs:
           script: |
               docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
               docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
-              if [ \$(docker ps -q) ]; then
-                docker rm -f \$(docker ps -qa)
+              if [[ "$(docker ps -q)" ]]; then
+                docker rm -f $(docker ps -qa)
               fi
               docker run -d --network app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project:${{ env.BUILD_DATE }}
               docker image prune -f
-        
+                
