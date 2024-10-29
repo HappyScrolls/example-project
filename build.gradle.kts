@@ -4,7 +4,6 @@ plugins {
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
     kotlin("plugin.jpa") version "1.9.24"
-    id("com.epages.restdocs-api-spec") version "0.17.1"
 }
 
 group = "com.yedongsoon"
@@ -31,13 +30,13 @@ dependencies {
     testImplementation("io.projectreactor:reactor-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    testImplementation("com.epages:restdocs-api-spec:0.17.1")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient:3.0.0")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
-    testImplementation("com.epages:restdocs-api-spec-openapi3-generator:0.17.1")
     implementation("io.netty:netty-resolver-dns-native-macos:4.1.97.Final:osx-aarch_64")
-
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
