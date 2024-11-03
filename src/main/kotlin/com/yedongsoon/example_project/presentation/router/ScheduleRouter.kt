@@ -17,7 +17,7 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
     @Bean
     @RouterOperations(
             RouterOperation(
-                    path = "/schedules",
+                    path = "/schedule",
                     beanClass = ScheduleHandler::class,
                     beanMethod = "createSchedule",
                     operation = Operation(
@@ -29,7 +29,20 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                             ]
                     )
             ),
-            // 다른 엔드포인트도 비슷하게 추가합니다.
+            RouterOperation(
+                    path = "/schedule//modify-reqeust",
+                    beanClass = ScheduleHandler::class,
+                    beanMethod = "createScheduleModifyRequest",
+                    operation = Operation(
+                            summary = "스케줄 수정 요청 생성",
+                            description = "새로운 스케줄 수정 요청 생성 api",
+                            responses = [
+                                ApiResponse(responseCode = "204", description = "스케줄 생성 성공"),
+                                ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
+                                ApiResponse(responseCode = "404", description = "존재하지 않는 일정 수정 요청")
+                            ]
+                    )
+            ),
     )
     fun scheduleRoute(): RouterFunction<ServerResponse> {
         return coRouter {
@@ -51,7 +64,11 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                 DELETE("/{scheduleNo}", scheduleHandler::deleteSchedule)
                 PUT("/{scheduleNo}/status", scheduleHandler::changeStatus)
                 PUT("/{scheduleNo}/common-schedule", scheduleHandler::setToCommonSchedule)
+                (accept(MediaType.APPLICATION_JSON) and "/modify-reqeust").nest {
+                    POST("", scheduleHandler::createScheduleModifyRequest)
+                }
             }
+
         }
     }
 }
