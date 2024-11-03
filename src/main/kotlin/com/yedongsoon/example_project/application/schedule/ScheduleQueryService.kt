@@ -1,5 +1,7 @@
-package com.yedongsoon.example_project.domain.schedule
+package com.yedongsoon.example_project.application.schedule
 
+import com.yedongsoon.example_project.domain.schedule.Schedule
+import com.yedongsoon.example_project.domain.schedule.ScheduleRepository
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
 import org.springframework.stereotype.Service
 import java.time.LocalDate
