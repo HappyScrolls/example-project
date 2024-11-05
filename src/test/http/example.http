@@ -1,10 +1,9 @@
 ### 생성
-POST {{url}}/example
+POST http://158.247.197.4:8084/example
 Content-Type: application/json
-Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
 {
-  "age": 1
+  "content": "AsdasdasdasdasdasdfaasDaSdsadfsfesaef"
 }
 
 ### 조회

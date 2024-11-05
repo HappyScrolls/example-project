@@ -15,7 +15,6 @@ class ExampleRouter(private val exampleHandler: ExampleHandler) {
         return coRouter {
             (accept(MediaType.APPLICATION_JSON) and "/example").nest {
                 POST("", exampleHandler::createExample)
-                GET("", exampleHandler::getExample)
             }
         }
     }

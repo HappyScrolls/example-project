@@ -1,14 +1,13 @@
 package com.yedongsoon.example_project.presentation.handler.model
 
-import com.yedongsoon.example_project.application.example.model.ExampleCreateCommand
+import com.yedongsoon.example_project.application.example.model.ErrLogCreateCommand
 
 data class ExampleCreateRequest(
-        val age: Int,
+        val content: String,
 ) {
 
-    fun toCommand(name: String) = ExampleCreateCommand(
-            name = name,
-            age = age,
+    fun toCommand() = ErrLogCreateCommand(
+            content = content
     )
 
 }
