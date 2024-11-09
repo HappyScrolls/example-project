@@ -61,7 +61,6 @@ kapt {
     }
 }
 
-// QueryDSL로 생성된 QClass의 경로 설정
 sourceSets {
     main {
         java.srcDir("build/generated/source/kapt/main")
@@ -77,4 +76,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.build {
+    dependsOn("openapi3")
 }
