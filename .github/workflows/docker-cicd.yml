@@ -28,8 +28,9 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build openapi3 -x test
 
       - name: Run Tests
         run: ./gradlew test
@@ -49,11 +50,17 @@ jobs:
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/example-project .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
 
+      - name: Upload API Spec to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GIT_TOKEN }}
+          publish_dir: ./build/api-spec
+          publish_branch: gh-pages
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      ## deploy to production
       - name: Deploy to prod
         uses: appleboy/ssh-action@master
         id: deploy-prod
@@ -65,13 +72,11 @@ jobs:
           envs: GITHUB_SHA
           script: |
               docker network inspect root_app-network >/dev/null 2>&1 || docker network create root_app-network
-              # 실행 중인 컨테이너를 중지하고 제거
               existing_container=$(docker ps -q --filter "ancestor=${{ secrets.DOCKER_HUB_USERNAME }}/example-project")
               if [[ -n "$existing_container" ]]; then
-                docker stop $existing_container  # 실행 중인 컨테이너를 중지
-                docker rm $existing_container    # 중지된 컨테이너를 제거
+                docker stop $existing_container
+                docker rm $existing_container
               fi
-              docker image prune -f  # 불필요한 이미지 삭제
-              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project  # 새로운 이미지를 pull
-              docker run -d --name example_project --network root_app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project  # 새로운 컨테이너 실행
-
+              docker image prune -f
+              docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
+              docker run -d --name example_project --network root_app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
