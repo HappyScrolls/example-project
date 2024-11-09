@@ -43,3 +43,8 @@ management:
     export:
       prometheus:
         enabled: true
+
+springdoc:
+  swagger-ui:
+    url: /docs/openapi3.json
+    path: /swagger-ui.html
