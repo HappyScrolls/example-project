@@ -32,17 +32,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean openapi3 build -x test
 
-      - name: Display OpenAPI Spec
-        if: success()  # 빌드 성공 시 출력
-        run: cat build/api-spec/openapi3.json
-
-      - name: Upload OpenAPI Spec as Artifact
-        if: success()
-        uses: actions/upload-artifact@v2
-        with:
-          name: openapi3-spec
-          path: build/api-spec/openapi3.json
-
       - name: Extract build date
         id: vars
         run: echo "BUILD_DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
