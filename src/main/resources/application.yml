@@ -34,7 +34,12 @@ couple:
   service:
     url: http://158.247.198.100:32002
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    url: /v3/api-docs
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true

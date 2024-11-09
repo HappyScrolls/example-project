@@ -15,35 +15,6 @@ import org.springframework.web.reactive.function.server.coRouter
 @Configuration
 class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
     @Bean
-    @RouterOperations(
-            RouterOperation(
-                    path = "/schedule",
-                    beanClass = ScheduleHandler::class,
-                    beanMethod = "createSchedule",
-                    operation = Operation(
-                            summary = "스케줄 생성",
-                            description = "새로운 스케줄을 생성합니다.",
-                            responses = [
-                                ApiResponse(responseCode = "204", description = "스케줄 생성 성공"),
-                                ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
-                            ]
-                    )
-            ),
-            RouterOperation(
-                    path = "/schedule//modify-reqeust",
-                    beanClass = ScheduleHandler::class,
-                    beanMethod = "createScheduleModifyRequest",
-                    operation = Operation(
-                            summary = "스케줄 수정 요청 생성",
-                            description = "새로운 스케줄 수정 요청 생성 api",
-                            responses = [
-                                ApiResponse(responseCode = "204", description = "스케줄 생성 성공"),
-                                ApiResponse(responseCode = "400", description = "잘못된 요청 데이터"),
-                                ApiResponse(responseCode = "404", description = "존재하지 않는 일정 수정 요청")
-                            ]
-                    )
-            ),
-    )
     fun scheduleRoute(): RouterFunction<ServerResponse> {
         return coRouter {
             (accept(MediaType.APPLICATION_JSON) and "/schedule").nest {

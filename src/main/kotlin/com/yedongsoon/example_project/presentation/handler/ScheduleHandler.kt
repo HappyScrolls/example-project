@@ -24,11 +24,6 @@ class ScheduleHandler(
         private val coupleQueryService: CoupleQueryService,
 ) {
     // 일정 등록
-    @Operation(summary = "스케줄 생성", description = "새로운 스케줄을 생성합니다.")
-    @ApiResponses(value = [
-        ApiResponse(responseCode = "204", description = "스케줄 생성 성공"),
-        ApiResponse(responseCode = "400", description = "중복된 요청 데이터")
-    ])
     suspend fun createSchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<ScheduleCreateRequest>()
