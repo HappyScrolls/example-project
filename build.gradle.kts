@@ -78,14 +78,11 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.build {
-    dependsOn("openapi3")
-}
 
 tasks.processResources {
     dependsOn("openapi3")
     from("build/api-spec") {
-        include("*.json")
+        include("openapi3.json")
         into("static/docs")
     }
 }
