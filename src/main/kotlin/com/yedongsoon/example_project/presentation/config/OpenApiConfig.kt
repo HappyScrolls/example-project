@@ -8,6 +8,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer
 class OpenApiConfig : WebFluxConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/docs/**")
-                .addResourceLocations("file:build/api-spec/")
+                .addResourceLocations("classpath:/static/docs/")  // JAR 내부의 리소스 경로로 수정
     }
 }

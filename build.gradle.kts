@@ -81,3 +81,11 @@ tasks.withType<Test> {
 tasks.build {
     dependsOn("openapi3")
 }
+
+tasks.processResources {
+    dependsOn("openapi3")
+    from("build/api-spec") {
+        include("*.json")
+        into("static/docs")
+    }
+}
