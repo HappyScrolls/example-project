@@ -10,6 +10,7 @@ import com.yedongsoon.example_project.domain.schedule.Schedule
 import com.yedongsoon.example_project.presentation.handler.ScheduleHandler
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleCreateRequest
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
+import com.yedongsoon.example_project.presentation.handler.model.ScheduleModifyRequestCreateDto
 import com.yedongsoon.example_project.presentation.router.ScheduleRouter
 import io.mockk.coEvery
 import io.mockk.coJustRun
@@ -199,6 +200,82 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                                         fieldWithPath("scheduleEndAt").type(JsonFieldType.STRING).description("바쁨 정도"),
                                                         fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("일정 상태")
                                                 ).build()
+                                )
+                        )
+                )
+    }
+
+    @Test
+    fun `일정을 공용 일정으로 설정 API 테스트`() {
+        val scheduleNo = 1
+
+        // `scheduleCommandService.setToCommonSchedule` 메서드 호출이 정상적으로 실행되도록 Mock 설정
+        coJustRun { scheduleCommandService.setToCommonSchedule(scheduleNo) }
+
+        // 테스트 요청: `/schedule/{scheduleNo}/common-schedule`에 대한 PUT 요청
+        webTestClient.put()
+                .uri("/schedule/{scheduleNo}/common-schedule", scheduleNo)
+                .header("Member-Code", "eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9")
+                .exchange()
+                .expectStatus().isOk  // 상태 코드가 200 OK인지 확인
+                .expectBody().consumeWith(
+                        document(
+                                "set-to-common-schedule",  // REST Docs 문서 스니펫 이름 설정
+                                ResourceDocumentation.resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag("common-log")
+                                                .description("일정을 공용 일정으로 설정")
+                                                .pathParameters(
+                                                        parameterWithName("scheduleNo").description("공용 일정으로 설정할 일정 번호")
+                                                ).build()
+                                )
+                        )
+                )
+    }
+
+    @Test
+    fun `수정 요청 생성 테스트`() {
+        val scheduleNo = 1
+
+        val request = ScheduleModifyRequestCreateDto(
+                scheduleNo = scheduleNo,
+                busyLevel = "HIGH",
+                scheduleName = "Workshop",
+                scheduleLocation = "Conference Room",
+                scheduleWith = "Team",
+                groupGenderType = "Male",
+                scheduleStartAt = LocalDateTime.now(),
+                scheduleEndAt = LocalDateTime.now().plusHours(3),
+                isCommon = false,
+                scheduleAt = LocalDate.now()
+        )
+
+        coJustRun { scheduleCommandService.createScheduleModifyRequest(any()) }
+
+        webTestClient.post()
+                .uri("/schedule/modify-reqeust", scheduleNo)
+                .header("Member-Code", "eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9")
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isNoContent
+                .expectBody().consumeWith(
+                        document(
+                                "modify-request-schedule",  // REST Docs 문서 스니펫 이름 설정
+                                ResourceDocumentation.resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag("modify-request")
+                                                .description("수정 요청 생성")
+                                                .requestFields(
+                                                        fieldWithPath("scheduleNo").type(JsonFieldType.NUMBER).description("일정 이름"),
+                                                        fieldWithPath("busyLevel").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("scheduleName").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("scheduleLocation").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("scheduleWith").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("groupGenderType").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("scheduleStartAt").type(JsonFieldType.ARRAY).description("함께하는 사람"),
+                                                        fieldWithPath("scheduleEndAt").type(JsonFieldType.ARRAY).description("바쁨 정도"),
+                                                        fieldWithPath("scheduleAt").type(JsonFieldType.ARRAY).description("바쁨 정도"),
+                                                        fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("일정 상태")).build()
                                 )
                         )
                 )
