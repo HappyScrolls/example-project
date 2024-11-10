@@ -79,10 +79,23 @@ tasks.withType<Test> {
 }
 
 
-tasks.processResources {
-    dependsOn("openapi3")
-    from("build/api-spec") {
-        include("*openapi3.json")
-        into("static/docs")
+tasks.register("generateOpenApiDocs") {
+    dependsOn("openapi3")  // `openapi3`가 실행된 후 실행
+    doLast {
+        val sourceFile = file("build/api-spec/openapi3.json")
+        val targetDir = file("src/main/resources/static/docs")
+
+        // 파일이 존재하는지 확인하고 복사
+        if (sourceFile.exists()) {
+            targetDir.mkdirs()  // 대상 디렉토리 생성
+            sourceFile.copyTo(File(targetDir, sourceFile.name), overwrite = true)  // 파일 복사
+            println("OpenAPI spec file copied to resources directory.")
+        } else {
+            println("OpenAPI spec file not found.")
+        }
     }
+}
+
+tasks.build {
+    dependsOn("generateOpenApiDocs")
 }
