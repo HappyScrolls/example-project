@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew build -x test
 
       - name: Extract build date
         id: vars
