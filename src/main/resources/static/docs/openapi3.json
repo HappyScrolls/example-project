@@ -1,0 +1,277 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "API documentation",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/schedule" : {
+      "get" : {
+        "tags" : [ "common-log" ],
+        "summary" : "특정 날짜 일정 조회",
+        "description" : "특정 날짜 일정 조회",
+        "operationId" : "read-schedules",
+        "parameters" : [ {
+          "name" : "searchDate",
+          "in" : "query",
+          "description" : "조회할 날짜",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/schedule-472846887"
+                },
+                "examples" : {
+                  "read-schedules" : {
+                    "value" : "[{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"LOW\",\"scheduleName\":\"Lunch\",\"scheduleLocation\":\"Cafe\",\"scheduleWith\":\"Friend\",\"status\":\"ONGOING\",\"scheduleStartAt\":\"2024-11-10T10:25:18.647243\",\"scheduleEndAt\":\"2024-11-10T11:25:18.647252\",\"isCommon\":false}]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "common-log" ],
+        "summary" : "공통 로그 정보 조회",
+        "description" : "공통 로그 정보 조회",
+        "operationId" : "create-schedule",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/schedule1506870442"
+              },
+              "examples" : {
+                "create-schedule" : {
+                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,10,10,25,17,928878000],\"scheduleEndAt\":[2024,11,10,12,25,17,928895000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "204"
+          }
+        }
+      }
+    },
+    "/schedule/detail/{scheduleNo}" : {
+      "get" : {
+        "tags" : [ "common-log" ],
+        "summary" : "일정 상세 조회",
+        "description" : "일정 상세 조회",
+        "operationId" : "read-schedule-detail",
+        "parameters" : [ {
+          "name" : "scheduleNo",
+          "in" : "path",
+          "description" : "일정 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/schedule-detail-scheduleNo-967438782"
+                },
+                "examples" : {
+                  "read-schedule-detail" : {
+                    "value" : "{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"status\":\"예정\",\"scheduleStartAt\":\"2024-11-10T10:25:18.808966\",\"scheduleEndAt\":\"2024-11-10T13:25:18.808982\",\"isCommon\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "schedule-detail-scheduleNo-967438782" : {
+        "type" : "object",
+        "properties" : {
+          "scheduleLocation" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleName" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleNo" : {
+            "type" : "number",
+            "description" : "일정 이름"
+          },
+          "scheduleEndAt" : {
+            "type" : "string",
+            "description" : "바쁨 정도"
+          },
+          "accountNo" : {
+            "type" : "number",
+            "description" : "일정 위치"
+          },
+          "scheduleStartAt" : {
+            "type" : "string",
+            "description" : "함께하는 사람"
+          },
+          "isCommon" : {
+            "type" : "boolean",
+            "description" : "일정 상태"
+          },
+          "busyLevel" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleWith" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          }
+        }
+      },
+      "schedule-472846887" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "scheduleLocation" : {
+              "type" : "string",
+              "description" : "함께하는 사람"
+            },
+            "scheduleName" : {
+              "type" : "string",
+              "description" : "일정 위치"
+            },
+            "scheduleNo" : {
+              "type" : "number",
+              "description" : "일정 이름"
+            },
+            "scheduleEndAt" : {
+              "type" : "string",
+              "description" : "바쁨 정도"
+            },
+            "accountNo" : {
+              "type" : "number",
+              "description" : "일정 위치"
+            },
+            "scheduleStartAt" : {
+              "type" : "string",
+              "description" : "함께하는 사람"
+            },
+            "isCommon" : {
+              "type" : "boolean",
+              "description" : "일정 상태"
+            },
+            "busyLevel" : {
+              "type" : "string",
+              "description" : "일정 이름"
+            },
+            "scheduleWith" : {
+              "type" : "string",
+              "description" : "바쁨 정도"
+            },
+            "status" : {
+              "type" : "string",
+              "description" : "일정 상태"
+            }
+          }
+        }
+      },
+      "schedule1506870442" : {
+        "type" : "object",
+        "properties" : {
+          "scheduleLocation" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleName" : {
+            "type" : "string",
+            "description" : "일정 이름"
+          },
+          "scheduleAt" : {
+            "type" : "array",
+            "description" : "일정 날짜",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "scheduleEndAt" : {
+            "type" : "array",
+            "description" : "일정 종료 시간",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "scheduleStartAt" : {
+            "type" : "array",
+            "description" : "일정 시작 시간",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "isCommon" : {
+            "type" : "boolean",
+            "description" : "공유 여부"
+          },
+          "groupGenderType" : {
+            "type" : "string",
+            "description" : "성별 그룹 타입"
+          },
+          "busyLevel" : {
+            "type" : "string",
+            "description" : "바쁨 정도"
+          },
+          "scheduleWith" : {
+            "type" : "string",
+            "description" : "일정을 함께 하는 사람"
+          }
+        }
+      }
+    }
+  }
+}
