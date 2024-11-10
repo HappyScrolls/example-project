@@ -8,6 +8,7 @@ import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequest
 import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequestRepository
 import com.yedongsoon.example_project.domain.schedule.ScheduleRepository
 import com.yedongsoon.example_project.domain.schedule.model.ScheduleCreateCommand
+import com.yedongsoon.example_project.domain.schedule.model.ScheduleModifyCommand
 import com.yedongsoon.example_project.domain.schedule.model.ScheduleModifyRequestCreateCommand
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -50,5 +51,9 @@ class ScheduleCommandService(
         val accountNo = scheduleRepository.findByIdOrNull(command.scheduleNo)?.accountNo
                 ?: throw ScheduleNotFoundException("스케줄을 찾을 수 없습니다.")
         scheduleModifyRequestRepository.save(ScheduleModifyRequest.create(command, accountNo))
+    }
+
+    fun modifySchedule(command: ScheduleModifyCommand) {
+        TODO("Not yet implemented")
     }
 }

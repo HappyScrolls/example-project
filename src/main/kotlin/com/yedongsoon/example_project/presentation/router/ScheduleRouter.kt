@@ -1,10 +1,6 @@
 package com.yedongsoon.example_project.presentation.router
 
 import com.yedongsoon.example_project.presentation.handler.ScheduleHandler
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springdoc.core.annotations.RouterOperation
-import org.springdoc.core.annotations.RouterOperations
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -33,6 +29,7 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                 GET("/common", scheduleHandler::getCommonSchedules)
                 // 일정 삭제
                 DELETE("/{scheduleNo}", scheduleHandler::deleteSchedule)
+                PUT("/{scheduleNo}", scheduleHandler::modifySchedule)
                 PUT("/{scheduleNo}/status", scheduleHandler::changeStatus)
                 PUT("/{scheduleNo}/common-schedule", scheduleHandler::setToCommonSchedule)
                 (accept(MediaType.APPLICATION_JSON) and "/modify-reqeust").nest {

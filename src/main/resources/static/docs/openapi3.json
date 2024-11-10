@@ -34,7 +34,7 @@
                 },
                 "examples" : {
                   "read-schedules" : {
-                    "value" : "[{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"LOW\",\"scheduleName\":\"Lunch\",\"scheduleLocation\":\"Cafe\",\"scheduleWith\":\"Friend\",\"status\":\"ONGOING\",\"scheduleStartAt\":\"2024-11-10T10:25:18.647243\",\"scheduleEndAt\":\"2024-11-10T11:25:18.647252\",\"isCommon\":false}]"
+                    "value" : "[{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"LOW\",\"scheduleName\":\"Lunch\",\"scheduleLocation\":\"Cafe\",\"scheduleWith\":\"Friend\",\"status\":\"ONGOING\",\"scheduleStartAt\":\"2024-11-10T18:22:16.540796\",\"scheduleEndAt\":\"2024-11-10T19:22:16.540805\",\"isCommon\":false}]"
                   }
                 }
               }
@@ -55,7 +55,34 @@
               },
               "examples" : {
                 "create-schedule" : {
-                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,10,10,25,17,928878000],\"scheduleEndAt\":[2024,11,10,12,25,17,928895000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
+                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,10,18,22,16,374904000],\"scheduleEndAt\":[2024,11,10,20,22,16,374919000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "204"
+          }
+        }
+      }
+    },
+    "/schedule/modify-reqeust" : {
+      "post" : {
+        "tags" : [ "modify-request" ],
+        "summary" : "수정 요청 생성",
+        "description" : "수정 요청 생성",
+        "operationId" : "modify-request-schedule",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/schedule-modify-reqeust-31157460"
+              },
+              "examples" : {
+                "modify-request-schedule" : {
+                  "value" : "{\"scheduleNo\":1,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"groupGenderType\":\"Male\",\"scheduleStartAt\":[2024,11,10,18,22,16,489669000],\"scheduleEndAt\":[2024,11,10,21,22,16,489682000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
                 }
               }
             }
@@ -93,11 +120,33 @@
                 },
                 "examples" : {
                   "read-schedule-detail" : {
-                    "value" : "{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"status\":\"예정\",\"scheduleStartAt\":\"2024-11-10T10:25:18.808966\",\"scheduleEndAt\":\"2024-11-10T13:25:18.808982\",\"isCommon\":false}"
+                    "value" : "{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"status\":\"예정\",\"scheduleStartAt\":\"2024-11-10T18:22:16.693477\",\"scheduleEndAt\":\"2024-11-10T21:22:16.693489\",\"isCommon\":false}"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/schedule/{scheduleNo}/common-schedule" : {
+      "put" : {
+        "tags" : [ "common-log" ],
+        "summary" : "일정을 공용 일정으로 설정",
+        "description" : "일정을 공용 일정으로 설정",
+        "operationId" : "set-to-common-schedule",
+        "parameters" : [ {
+          "name" : "scheduleNo",
+          "in" : "path",
+          "description" : "공용 일정으로 설정할 일정 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
           }
         }
       }
@@ -145,6 +194,84 @@
             "description" : "일정 위치"
           },
           "status" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          }
+        }
+      },
+      "schedule-modify-reqeust-31157460" : {
+        "type" : "object",
+        "properties" : {
+          "scheduleLocation" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleName" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleNo" : {
+            "type" : "number",
+            "description" : "일정 이름"
+          },
+          "scheduleAt" : {
+            "type" : "array",
+            "description" : "바쁨 정도",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "scheduleEndAt" : {
+            "type" : "array",
+            "description" : "바쁨 정도",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "scheduleStartAt" : {
+            "type" : "array",
+            "description" : "함께하는 사람",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "isCommon" : {
+            "type" : "boolean",
+            "description" : "일정 상태"
+          },
+          "groupGenderType" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "busyLevel" : {
+            "type" : "string",
+            "description" : "일정 위치"
+          },
+          "scheduleWith" : {
             "type" : "string",
             "description" : "일정 위치"
           }

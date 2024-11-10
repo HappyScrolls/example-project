@@ -8,10 +8,8 @@ import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleCreateRequest
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
+import com.yedongsoon.example_project.presentation.handler.model.ScheduleModifyRequest
 import com.yedongsoon.example_project.presentation.handler.model.ScheduleModifyRequestCreateDto
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.responses.ApiResponse
-import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
@@ -112,4 +110,14 @@ class ScheduleHandler(
         ServerResponse.noContent().buildAndAwait()
     }
 
+    suspend fun modifySchedule(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+        val memberHeader = request.extractMemberCodeHeader()
+        val command = request.awaitBodyOrNull<ScheduleModifyRequest>()
+                ?.toCommand(scheduleNo, memberHeader.no)
+                ?: throw IllegalArgumentException()
+
+        scheduleCommandService.modifySchedule(command)
+        ServerResponse.ok().buildAndAwait()
+    }
 }
