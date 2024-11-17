@@ -57,3 +57,28 @@ Content-Type: application/json
 GET {{url}}/schedule/common?searchDate=2024-09-26
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### FCM 알림 전송
+POST https://fcm.googleapis.com/v1/projects/togethery-52df6/messages:send
+Authorization: Bearer {{ACCESS_TOKEN}}
+Content-Type: application/json
+
+{
+  "message": {
+    "token": "YOUR_DEVICE_FCM_TOKEN",
+    "notification": {
+      "title": "Hello from IntelliJ",
+      "body": "This is a test notification sent via IntelliJ!"
+    },
+    "data": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  }
+}
+
+
+### 알림
+POST http://localhost:8084/example/noti
+Content-Type: application/json
