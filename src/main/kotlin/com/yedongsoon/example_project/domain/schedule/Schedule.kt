@@ -2,6 +2,7 @@ package com.yedongsoon.example_project.domain.schedule
 
 import com.yedongsoon.example_project.domain.extension.BooleanToYNConverter
 import com.yedongsoon.example_project.domain.schedule.model.ScheduleCreateCommand
+import com.yedongsoon.example_project.domain.schedule.model.ScheduleModifyCommand
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -65,6 +66,18 @@ class Schedule(
 
     fun toCommon() {
         this.isCommon = true
+    }
+
+    fun updateSchedule(command: ScheduleModifyCommand) {
+        this.busyLevel = command.busyLevel
+        this.scheduleName = command.scheduleName
+        this.scheduleLocation = command.scheduleLocation
+        this.scheduleWith = command.scheduleWith
+        this.groupGenderType = command.groupGenderType
+        this.scheduleStartAt = command.scheduleStartAt
+        this.scheduleEndAt = command.scheduleEndAt
+        this.isCommon = command.isCommon
+        this.scheduleAt = command.scheduleAt
     }
 
     companion object {

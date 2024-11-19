@@ -11,7 +11,7 @@
   "paths" : {
     "/schedule" : {
       "get" : {
-        "tags" : [ "common-log" ],
+        "tags" : [ "schedule" ],
         "summary" : "특정 날짜 일정 조회",
         "description" : "특정 날짜 일정 조회",
         "operationId" : "read-schedules",
@@ -34,7 +34,7 @@
                 },
                 "examples" : {
                   "read-schedules" : {
-                    "value" : "[{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"LOW\",\"scheduleName\":\"Lunch\",\"scheduleLocation\":\"Cafe\",\"scheduleWith\":\"Friend\",\"status\":\"ONGOING\",\"scheduleStartAt\":\"2024-11-10T18:22:16.540796\",\"scheduleEndAt\":\"2024-11-10T19:22:16.540805\",\"isCommon\":false}]"
+                    "value" : "[{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"LOW\",\"scheduleName\":\"Lunch\",\"scheduleLocation\":\"Cafe\",\"scheduleWith\":\"Friend\",\"status\":\"ONGOING\",\"scheduleStartAt\":\"2024-11-19T19:53:53.488182\",\"scheduleEndAt\":\"2024-11-19T20:53:53.488194\",\"isCommon\":false}]"
                   }
                 }
               }
@@ -43,9 +43,9 @@
         }
       },
       "post" : {
-        "tags" : [ "common-log" ],
-        "summary" : "공통 로그 정보 조회",
-        "description" : "공통 로그 정보 조회",
+        "tags" : [ "schedule" ],
+        "summary" : "일정 등록",
+        "description" : "일정 등록",
         "operationId" : "create-schedule",
         "requestBody" : {
           "content" : {
@@ -55,7 +55,7 @@
               },
               "examples" : {
                 "create-schedule" : {
-                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,10,18,22,16,374904000],\"scheduleEndAt\":[2024,11,10,20,22,16,374919000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
+                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,19,19,53,53,400195000],\"scheduleEndAt\":[2024,11,19,21,53,53,400208000],\"isCommon\":false,\"scheduleAt\":[2024,11,19]}"
                 }
               }
             }
@@ -82,7 +82,43 @@
               },
               "examples" : {
                 "modify-request-schedule" : {
-                  "value" : "{\"scheduleNo\":1,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"groupGenderType\":\"Male\",\"scheduleStartAt\":[2024,11,10,18,22,16,489669000],\"scheduleEndAt\":[2024,11,10,21,22,16,489682000],\"isCommon\":false,\"scheduleAt\":[2024,11,10]}"
+                  "value" : "{\"scheduleNo\":1,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"groupGenderType\":\"Male\",\"scheduleStartAt\":[2024,11,19,19,53,53,441547000],\"scheduleEndAt\":[2024,11,19,22,53,53,441565000],\"isCommon\":false,\"scheduleAt\":[2024,11,19]}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "204"
+          }
+        }
+      }
+    },
+    "/schedule/{scheduleNo}" : {
+      "put" : {
+        "tags" : [ "schedule" ],
+        "summary" : "스케쥴 수정",
+        "description" : "스케쥴 수정",
+        "operationId" : "modify-schedule",
+        "parameters" : [ {
+          "name" : "scheduleNo",
+          "in" : "path",
+          "description" : "일정 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/schedule1506870442"
+              },
+              "examples" : {
+                "modify-schedule" : {
+                  "value" : "{\"busyLevel\":\"MEDIUM\",\"scheduleName\":\"Meeting\",\"scheduleLocation\":\"Office\",\"scheduleWith\":\"Colleagues\",\"groupGenderType\":\"MIXED\",\"scheduleStartAt\":[2024,11,19,19,53,52,763447000],\"scheduleEndAt\":[2024,11,19,21,53,52,763465000],\"isCommon\":false,\"scheduleAt\":[2024,11,19]}"
                 }
               }
             }
@@ -97,7 +133,7 @@
     },
     "/schedule/detail/{scheduleNo}" : {
       "get" : {
-        "tags" : [ "common-log" ],
+        "tags" : [ "schedule" ],
         "summary" : "일정 상세 조회",
         "description" : "일정 상세 조회",
         "operationId" : "read-schedule-detail",
@@ -120,7 +156,7 @@
                 },
                 "examples" : {
                   "read-schedule-detail" : {
-                    "value" : "{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"status\":\"예정\",\"scheduleStartAt\":\"2024-11-10T18:22:16.693477\",\"scheduleEndAt\":\"2024-11-10T21:22:16.693489\",\"isCommon\":false}"
+                    "value" : "{\"scheduleNo\":1,\"accountNo\":100,\"busyLevel\":\"HIGH\",\"scheduleName\":\"Workshop\",\"scheduleLocation\":\"Conference Room\",\"scheduleWith\":\"Team\",\"status\":\"예정\",\"scheduleStartAt\":\"2024-11-19T19:53:53.697101\",\"scheduleEndAt\":\"2024-11-19T22:53:53.697117\",\"isCommon\":false}"
                   }
                 }
               }
@@ -131,7 +167,7 @@
     },
     "/schedule/{scheduleNo}/common-schedule" : {
       "put" : {
-        "tags" : [ "common-log" ],
+        "tags" : [ "schedule" ],
         "summary" : "일정을 공용 일정으로 설정",
         "description" : "일정을 공용 일정으로 설정",
         "operationId" : "set-to-common-schedule",

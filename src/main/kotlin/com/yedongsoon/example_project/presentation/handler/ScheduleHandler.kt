@@ -118,6 +118,6 @@ class ScheduleHandler(
                 ?: throw IllegalArgumentException()
 
         scheduleCommandService.modifySchedule(command)
-        ServerResponse.ok().buildAndAwait()
+        ServerResponse.noContent().buildAndAwait()
     }
 }

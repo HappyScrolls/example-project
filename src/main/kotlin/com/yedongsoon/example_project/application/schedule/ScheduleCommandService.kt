@@ -54,6 +54,10 @@ class ScheduleCommandService(
     }
 
     fun modifySchedule(command: ScheduleModifyCommand) {
-        TODO("Not yet implemented")
+        scheduleRepository.findByIdOrNull(command.scheduleNo)?.let {
+            it.updateSchedule(command)
+            scheduleRepository.save(it)
+        } ?: throw ScheduleNotFoundException("존재하지 않습니다")
+        //TODO: 수정 요청 상태 변경
     }
 }

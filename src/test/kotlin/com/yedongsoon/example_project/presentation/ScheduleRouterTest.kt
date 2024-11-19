@@ -86,8 +86,8 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                 "create-schedule",
                                 ResourceDocumentation.resource(
                                         ResourceSnippetParameters.builder()
-                                                .tag("common-log")
-                                                .description("공통 로그 정보 조회")
+                                                .tag("schedule")
+                                                .description("일정 등록")
                                                 .requestFields(
                                                         fieldWithPath("scheduleName").type(JsonFieldType.STRING).description("일정 이름"),
                                                         fieldWithPath("scheduleLocation").type(JsonFieldType.STRING).description("일정 위치"),
@@ -131,7 +131,7 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                 "read-schedules",
                                 ResourceDocumentation.resource(
                                         ResourceSnippetParameters.builder()
-                                                .tag("common-log")
+                                                .tag("schedule")
                                                 .description("특정 날짜 일정 조회")
                                                 .queryParameters(
                                                         parameterWithName("searchDate").description("조회할 날짜"),
@@ -183,7 +183,7 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                 "read-schedule-detail",
                                 ResourceDocumentation.resource(
                                         ResourceSnippetParameters.builder()
-                                                .tag("common-log")
+                                                .tag("schedule")
                                                 .description("일정 상세 조회")
                                                 .pathParameters(
                                                         parameterWithName("scheduleNo").description("일정 번호"),
@@ -223,7 +223,7 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                 "set-to-common-schedule",  // REST Docs 문서 스니펫 이름 설정
                                 ResourceDocumentation.resource(
                                         ResourceSnippetParameters.builder()
-                                                .tag("common-log")
+                                                .tag("schedule")
                                                 .description("일정을 공용 일정으로 설정")
                                                 .pathParameters(
                                                         parameterWithName("scheduleNo").description("공용 일정으로 설정할 일정 번호")
@@ -280,5 +280,54 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                         )
                 )
     }
+
+
+    @Test
+    fun `일정 수정 API 테스트`() {
+        val request = ScheduleCreateRequest(
+                busyLevel = "MEDIUM",
+                scheduleName = "Meeting",
+                scheduleLocation = "Office",
+                scheduleWith = "Colleagues",
+                groupGenderType = "MIXED",
+                scheduleStartAt = LocalDateTime.now(),
+                scheduleEndAt = LocalDateTime.now().plusHours(2),
+                isCommon = false,
+                scheduleAt = LocalDate.now()
+        )
+        val scheduleNo = 1
+        coJustRun { scheduleCommandService.modifySchedule(any()) }
+        webTestClient.put()
+                .uri("/schedule/{scheduleNo}", scheduleNo)
+                .header("Member-Code", "eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9")
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isNoContent
+                .expectBody().consumeWith(
+                        document(
+                                "modify-schedule",
+                                ResourceDocumentation.resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag("schedule")
+                                                .description("스케쥴 수정")
+                                                .pathParameters(
+                                                        parameterWithName("scheduleNo").description("일정 번호"),
+                                                )
+                                                .requestFields(
+                                                        fieldWithPath("scheduleName").type(JsonFieldType.STRING).description("일정 이름"),
+                                                        fieldWithPath("scheduleLocation").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("scheduleWith").type(JsonFieldType.STRING).description("일정을 함께 하는 사람"),
+                                                        fieldWithPath("busyLevel").type(JsonFieldType.STRING).description("바쁨 정도"),
+                                                        fieldWithPath("groupGenderType").type(JsonFieldType.STRING).description("성별 그룹 타입"),
+                                                        fieldWithPath("scheduleStartAt").type(JsonFieldType.ARRAY).description("일정 시작 시간"),
+                                                        fieldWithPath("scheduleEndAt").type(JsonFieldType.ARRAY).description("일정 종료 시간"),
+                                                        fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("공유 여부"),
+                                                        fieldWithPath("scheduleAt").type(JsonFieldType.ARRAY).description("일정 날짜")
+                                                ).build()
+                                )
+                        )
+                )
+    }
+
 }
 
