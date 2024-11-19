@@ -5,23 +5,24 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import org.springframework.context.annotation.Bean
-import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 
 @Component
 class FcmConfig {
-    private val firebaseResource = ClassPathResource(
-            "togethery-52df6-firebase-adminsdk-6ydyl-28996956a9.json")
 
     @Bean
-    fun firebaseApp(): FirebaseApp {
+    suspend fun firebaseMessaging(): FirebaseMessaging {
+        val credentialsJson = System.getenv("GOOGLE_CREDENTIALS")
+        println("credentialsJson = ${credentialsJson}")
+        val credentialsStream = credentialsJson.byteInputStream(Charsets.UTF_8)
         val options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(
-                        firebaseResource.inputStream))
+                        credentialsStream))
                 .build()
         // FirebaseApp 정보 출력
-        val app = FirebaseApp.initializeApp(options)
-
+        val app = FirebaseApp.getApps().firstOrNull { it.name == FirebaseApp.DEFAULT_APP_NAME } ?: let {
+            FirebaseApp.initializeApp(options)
+        }
         if (app != null) {
             println("FirebaseApp initialized successfully!")
             println("Name: ${app.name}")
@@ -29,11 +30,6 @@ class FcmConfig {
         } else {
             println("Failed to initialize FirebaseApp.")
         }
-        return app
-    }
-
-    @Bean
-    fun firebaseMessaging(firebaseApp: FirebaseApp): FirebaseMessaging {
-        return FirebaseMessaging.getInstance(firebaseApp)
+        return FirebaseMessaging.getInstance(app)
     }
 }

@@ -24,22 +24,18 @@ class NotificationCommandService(
     suspend fun sendFcmNotification(command: FcmNotificationSendCommand) {
         val fcmKey = memberRepository.findByNo(command.memberNo)?.fcmKey
         if (fcmKey != null) {
-            try {
-                val notification = Notification.builder()
-                        .setTitle(command.title)
-                        .setBody(command.body)
-                        .build()
-                val message = Message.builder()
-                        .setToken(fcmKey)
-                        .setNotification(notification)
-                        .putData("uri", command.uri)
-                        .build()
+            val notification = Notification.builder()
+                    .setTitle(command.title)
+                    .setBody(command.body)
+                    .build()
+            val message = Message.builder()
+                    .setToken(fcmKey)
+                    .setNotification(notification)
+                    .putData("uri", command.uri)
+                    .build()
 
-                val response = firebaseMessaging.send(message)
-                println("Successfully sent message: $response")
-            } catch (e: Exception) {
-                println("Error sending message: ${e.message}")
-            }
+            val response = firebaseMessaging.send(message)
+            println("Successfully sent message: $response")
         }
     }
 }

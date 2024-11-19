@@ -51,7 +51,8 @@ dependencies {
     testImplementation("com.epages:restdocs-api-spec-openapi3-generator:0.17.1")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.google.firebase:firebase-admin:9.1.1")
-
+    implementation("software.amazon.awssdk:s3:2.17.43") // AWS S3 SDK
+    implementation("software.amazon.awssdk:netty-nio-client:2.17.43")
 
 }
 
