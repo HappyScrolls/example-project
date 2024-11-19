@@ -50,6 +50,10 @@ class Member(
     var mobileNo: String? = mobileNo
         private set
 
+    @Column(name = "fcm_key")
+    var fcmKey: String? = null
+        private set
+
     fun createAdditionalInfo(command: MemberAdditionalInfoCommand) {
         name = command.name ?: name
         profilePhoto = command.profilePhoto
@@ -63,5 +67,9 @@ class Member(
         profilePhoto = command.profilePhoto
         birthDate = command.birthDate
         mobileNo = command.mobileNo
+    }
+
+    fun applyFcmKey(key: String) {
+        fcmKey = key
     }
 }

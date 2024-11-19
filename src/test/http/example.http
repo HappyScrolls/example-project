@@ -15,7 +15,7 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 ### 일정 등록
 POST {{url}}/schedule
 Content-Type: application/json
-Member-Code: eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+Member-Code: eyJubyI6NywibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
 {
   "busyLevel": "여유",
@@ -23,9 +23,9 @@ Member-Code: eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
   "scheduleLocation": "서울",
   "scheduleWith": "예지 공통 스케줄",
   "groupGenderType": "여",
-  "scheduleStartAt": "2024-08-29T10:00:00",
-  "scheduleEndAt": "2024-08-29T11:00:00",
-  "scheduleAt": "2024-09-02",
+  "scheduleStartAt": "2024-01-11T20:00:00",
+  "scheduleEndAt": "2024-01-11T23:00:00",
+  "scheduleAt": "2024-09-03",
   "isCommon": true
 }
 
@@ -57,3 +57,28 @@ Content-Type: application/json
 GET {{url}}/schedule/common?searchDate=2024-09-26
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### FCM 알림 전송
+POST https://fcm.googleapis.com/v1/projects/togethery-52df6/messages:send
+Authorization: Bearer {{ACCESS_TOKEN}}
+Content-Type: application/json
+
+{
+  "message": {
+    "token": "YOUR_DEVICE_FCM_TOKEN",
+    "notification": {
+      "title": "Hello from IntelliJ",
+      "body": "This is a test notification sent via IntelliJ!"
+    },
+    "data": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  }
+}
+
+
+### 알림
+POST http://localhost:8084/example/noti
+Content-Type: application/json

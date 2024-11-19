@@ -3,6 +3,8 @@ package com.yedongsoon.example_project.application.schedule
 import com.yedongsoon.example_project.application.couple.CoupleQueryService
 import com.yedongsoon.example_project.application.exception.ScheduleDuplicatedException
 import com.yedongsoon.example_project.application.exception.ScheduleNotFoundException
+import com.yedongsoon.example_project.application.notification.NotificationCommandService
+import com.yedongsoon.example_project.application.notification.model.FcmNotificationSendCommand
 import com.yedongsoon.example_project.domain.schedule.Schedule
 import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequest
 import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequestRepository
@@ -18,14 +20,21 @@ class ScheduleCommandService(
         private val scheduleRepository: ScheduleRepository,
         private val coupleQueryService: CoupleQueryService,
         private val scheduleModifyRequestRepository: ScheduleModifyRequestRepository,
+        private val notificationCommandService: NotificationCommandService,
 ) {
     // 일정 등록
-    fun createSchedule(command: ScheduleCreateCommand) {
+    suspend fun createSchedule(command: ScheduleCreateCommand) {
         val partnerNo = coupleQueryService.getLover(command.accountNo).no
         if (scheduleRepository.existsByDuplicateSchedule(command.scheduleStartAt, command.scheduleEndAt, command.accountNo, partnerNo)) {
             throw ScheduleDuplicatedException("시간대에 겹치는 일정이 존재합니다")
         }
         scheduleRepository.save(Schedule.create(command))
+        notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
+                memberNo = partnerNo,
+                title = "일정 등록 알림",
+                body = "상대방이 일정을 등록했씁니다.",
+                uri = "/main"
+        ))
     }
 
     // 일정 삭제

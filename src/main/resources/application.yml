@@ -15,7 +15,7 @@ spring:
             read-timeout: 4000
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://dev-mysql:3306/yedongsoon?autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://158.247.197.4:13306/yedongsoon?autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: hyuksoon
     password: hs0103
     cache-prep-stmts: true
@@ -48,3 +48,11 @@ springdoc:
   swagger-ui:
     url: /docs/openapi3.json
     path: /swagger-ui.html
+
+vultr:
+  s3:
+    endpoint: https://sgp1.vultrobjects.com
+    region: sgp1
+    access-key: JVPVN64QQD7WKJYVWK7X
+    secret-key: dDQyE0vTkgqjoseVvoy33N9UplmdWzlG3A3Slx5B
+    bucket-name: fcm
