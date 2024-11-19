@@ -68,4 +68,4 @@ jobs:
             fi
             docker image prune -f
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
-            docker run -d --name example_project --network root_app-network -p 8084:8084 -e USE_PROFILE=prod -e GOOGLE_CREDENTIALS="${{ secrets.GOOGLE_CREDENTIALS }}" \ ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
+            docker run -d --name example_project --network root_app-network -p 8084:8084 -e GOOGLE_CREDENTIALS="${{ secrets.GOOGLE_CREDENTIALS }}" -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
