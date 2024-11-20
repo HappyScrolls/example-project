@@ -82,3 +82,8 @@ Content-Type: application/json
 ### 알림
 POST http://localhost:8084/example/noti
 Content-Type: application/json
+
+
+### invite-code
+POST {{url}}/account-service/couple/invite-code
+Member-Code:eyJubyI6NSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
