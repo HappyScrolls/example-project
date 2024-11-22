@@ -42,6 +42,7 @@ class NotificationCommandService(
 
     fun testNotification(request: TestNotificationRequest): String {
         val fcmKey = memberRepository.findByNo(request.memberNo)?.fcmKey
+        println("fcmKey = ${fcmKey}")
         if (fcmKey != null) {
             val notification = Notification.builder()
                     .setTitle(request.title)
@@ -54,6 +55,8 @@ class NotificationCommandService(
                     .build()
 
             val response = firebaseMessaging.send(message)
+            println("!!!!")
+            println(response)
             return response
         }
         return ""

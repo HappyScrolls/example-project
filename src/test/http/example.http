@@ -90,7 +90,7 @@ Member-Code:eyJubyI6NSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
 
 ### test-noti
-POST {{url}}/notification/test
+POST localhost:8084/notification/test
 Content-Type: application/json
 
 {

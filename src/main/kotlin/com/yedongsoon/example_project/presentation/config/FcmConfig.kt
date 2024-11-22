@@ -12,7 +12,7 @@ class FcmConfig {
 
     @Bean
     suspend fun firebaseMessaging(): FirebaseMessaging {
-        val credentialsJson = System.getenv("GOOGLE_CREDENTIALS")
+        val credentialsJson = System.getenv("fcmjson")
         println("credentialsJson = ${credentialsJson}")
         val credentialsStream = credentialsJson.byteInputStream(Charsets.UTF_8)
         val options = FirebaseOptions.builder()
