@@ -7,16 +7,18 @@ import com.google.firebase.messaging.FirebaseMessaging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class FcmConfig {
-    @Value("\${fcmjson}")
+    @Value("\${fcm.json}")
     private lateinit var credentialsJson: String
 
     @Bean
     suspend fun firebaseMessaging(): FirebaseMessaging {
-        println("credentialsJson = ${credentialsJson}")
-        val credentialsStream = credentialsJson.byteInputStream(Charsets.UTF_8)
+        val json = String(Base64.getDecoder().decode(credentialsJson))
+        println("credentialsJson = ${json}")
+        val credentialsStream = json.byteInputStream(Charsets.UTF_8)
         val options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(
                         credentialsStream))
