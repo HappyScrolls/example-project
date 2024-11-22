@@ -49,8 +49,6 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    env:
-      FCM_JSON: ${{ secrets.FCM_JSON }}
     steps:
       - name: Deploy to prod
         uses: appleboy/ssh-action@master
@@ -70,4 +68,4 @@ jobs:
             fi
             docker image prune -f
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
-            docker run -d --name example_project --network root_app-network -p 8084:8084 -e fcmjson=${FCM_JSON} -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
+            docker run -d --name example_project --network root_app-network -p 8084:8084 -e USE_PROFILE=prod ${{ secrets.DOCKER_HUB_USERNAME }}/example-project
