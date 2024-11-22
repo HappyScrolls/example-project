@@ -15,6 +15,7 @@ class NotificationRouter(private val notificationHandler: NotificationHandler) {
         return coRouter {
             (accept(MediaType.APPLICATION_JSON) and "/notification").nest {
                 PATCH("/fcm-key", notificationHandler::refreshFcmKey)
+                POST("/test", notificationHandler::testNotification)
             }
         }
     }

@@ -3,13 +3,11 @@ package com.yedongsoon.example_project.presentation.handler
 import com.yedongsoon.example_project.application.notification.NotificationCommandService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
 import com.yedongsoon.example_project.presentation.handler.model.FcmKeyRefreshRequest
+import com.yedongsoon.example_project.presentation.handler.model.TestNotificationRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
-import org.springframework.web.reactive.function.server.ServerRequest
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.awaitBodyOrNull
-import org.springframework.web.reactive.function.server.buildAndAwait
+import org.springframework.web.reactive.function.server.*
 
 
 @Service
@@ -24,5 +22,14 @@ class NotificationHandler(
         notificationCommandService.refreshFcmKey(command)
 
         ServerResponse.noContent().buildAndAwait()
+    }
+
+    suspend fun testNotification(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val request = request.awaitBodyOrNull<TestNotificationRequest>()
+                ?: throw IllegalArgumentException()
+
+        val result = notificationCommandService.testNotification(request)
+
+        ServerResponse.ok().bodyValueAndAwait(result)
     }
 }

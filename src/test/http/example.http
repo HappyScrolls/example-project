@@ -30,7 +30,7 @@ Member-Code: eyJubyI6NywibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 }
 
 ### 특정 날짜 일정 조회
-GET {{url}}/schedule?searchDate=2024-09-26
+GET https://togethery.store/api/schedule?searchDate=2024-09-26
 Content-Type: application/json
 Member-Code: eyJubyI6MiwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 
@@ -87,3 +87,15 @@ Content-Type: application/json
 ### invite-code
 POST {{url}}/account-service/couple/invite-code
 Member-Code:eyJubyI6NSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+### test-noti
+POST {{url}}/notification/test
+Content-Type: application/json
+
+{
+  "memberNo": 15,
+  "title": "테스트",
+  "body": "body",
+  "uri": "/"
+}

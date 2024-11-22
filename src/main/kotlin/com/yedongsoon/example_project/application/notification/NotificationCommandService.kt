@@ -7,6 +7,7 @@ import com.yedongsoon.example_project.application.exception.MemberNotFoundExcept
 import com.yedongsoon.example_project.application.notification.model.FcmKeyRefreshCommand
 import com.yedongsoon.example_project.application.notification.model.FcmNotificationSendCommand
 import com.yedongsoon.example_project.domain.member.MemberRepository
+import com.yedongsoon.example_project.presentation.handler.model.TestNotificationRequest
 import org.springframework.stereotype.Service
 
 @Service
@@ -37,5 +38,24 @@ class NotificationCommandService(
             val response = firebaseMessaging.send(message)
             println("Successfully sent message: $response")
         }
+    }
+
+    fun testNotification(request: TestNotificationRequest): String {
+        val fcmKey = memberRepository.findByNo(request.memberNo)?.fcmKey
+        if (fcmKey != null) {
+            val notification = Notification.builder()
+                    .setTitle(request.title)
+                    .setBody(request.body)
+                    .build()
+            val message = Message.builder()
+                    .setToken(fcmKey)
+                    .setNotification(notification)
+                    .putData("uri", request.uri)
+                    .build()
+
+            val response = firebaseMessaging.send(message)
+            return response
+        }
+        return ""
     }
 }
