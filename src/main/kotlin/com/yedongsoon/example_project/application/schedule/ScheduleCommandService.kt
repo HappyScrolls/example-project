@@ -65,7 +65,7 @@ class ScheduleCommandService(
     fun modifySchedule(command: ScheduleModifyCommand) {
         scheduleRepository.findByIdOrNull(command.scheduleNo)?.let {
             val partnerNo = coupleQueryService.getLover(command.accountNo).no
-            if (scheduleRepository.existsByDuplicateSchedule(command.scheduleStartAt, command.scheduleEndAt, command.accountNo, partnerNo)) {
+            if (scheduleRepository.existsByDuplicateScheduleForModify(command.scheduleStartAt, command.scheduleEndAt, command.accountNo, partnerNo, command.scheduleNo)) {
                 throw ScheduleDuplicatedException("시간대에 겹치는 일정이 존재합니다")
             }
             it.updateSchedule(command)
