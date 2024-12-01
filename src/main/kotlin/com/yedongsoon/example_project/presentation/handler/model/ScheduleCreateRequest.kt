@@ -1,7 +1,6 @@
 package com.yedongsoon.example_project.presentation.handler.model
 
 import com.yedongsoon.example_project.domain.schedule.model.ScheduleCreateCommand
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ScheduleCreateRequest(
@@ -13,7 +12,6 @@ data class ScheduleCreateRequest(
         val scheduleStartAt: LocalDateTime,
         val scheduleEndAt: LocalDateTime,
         val isCommon: Boolean,
-        val scheduleAt: LocalDate
 ) {
     // 입력값 -> command
     fun toCommand(no: Int) = ScheduleCreateCommand(
@@ -26,7 +24,5 @@ data class ScheduleCreateRequest(
             scheduleStartAt = scheduleStartAt,
             scheduleEndAt = scheduleEndAt,
             isCommon = isCommon,
-            scheduleAt = scheduleAt
     )
 }
-

@@ -1,7 +1,6 @@
 package com.yedongsoon.example_project.presentation.handler.model
 
 import com.yedongsoon.example_project.domain.schedule.model.ScheduleModifyCommand
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ScheduleModifyRequest(
@@ -21,8 +20,6 @@ data class ScheduleModifyRequest(
         val scheduleEndAt: LocalDateTime,
 
         val isCommon: Boolean,
-
-        val scheduleAt: LocalDate
 ) {
     fun toCommand(scheduleNo: Int, accountNo: Int) = ScheduleModifyCommand(
             accountNo = accountNo,
@@ -36,6 +33,5 @@ data class ScheduleModifyRequest(
             scheduleStartAt = scheduleStartAt,
             scheduleEndAt = scheduleEndAt,
             isCommon = isCommon,
-            scheduleAt = scheduleAt
     )
 }

@@ -77,7 +77,7 @@ class Schedule(
         this.scheduleStartAt = command.scheduleStartAt
         this.scheduleEndAt = command.scheduleEndAt
         this.isCommon = command.isCommon
-        this.scheduleAt = command.scheduleAt
+        this.scheduleAt = command.scheduleStartAt.toLocalDate()
     }
 
     companion object {
@@ -92,7 +92,7 @@ class Schedule(
                 scheduleStartAt = command.scheduleStartAt,
                 scheduleEndAt = command.scheduleEndAt,
                 isCommon = command.isCommon,
-                scheduleAt = command.scheduleAt
+                scheduleAt = command.scheduleStartAt.toLocalDate()
         )
     }
 }

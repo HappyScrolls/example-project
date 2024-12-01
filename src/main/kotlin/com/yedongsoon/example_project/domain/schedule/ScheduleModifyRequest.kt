@@ -73,7 +73,7 @@ class ScheduleModifyRequest(
                 scheduleStartAt = command.scheduleStartAt,
                 scheduleEndAt = command.scheduleEndAt,
                 isCommon = command.isCommon,
-                scheduleAt = command.scheduleAt
+                scheduleAt = command.scheduleStartAt.toLocalDate()
         )
     }
 }
