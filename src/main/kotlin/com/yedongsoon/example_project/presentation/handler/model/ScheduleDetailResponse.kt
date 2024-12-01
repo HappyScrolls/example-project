@@ -13,6 +13,7 @@ data class ScheduleDetailResponse(
         val status: String,
         val scheduleStartAt: LocalDateTime,
         val scheduleEndAt: LocalDateTime,
+        val genderType: String,
         val isCommon: Boolean,
 ) {
     companion object {
@@ -27,6 +28,7 @@ data class ScheduleDetailResponse(
                 status = schedule.status,
                 scheduleStartAt = schedule.scheduleStartAt,
                 scheduleEndAt = schedule.scheduleEndAt,
+                genderType = schedule.groupGenderType,
                 isCommon = schedule.isCommon,
         )
     }
