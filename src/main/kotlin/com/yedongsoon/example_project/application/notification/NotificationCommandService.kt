@@ -13,7 +13,6 @@ import com.yedongsoon.example_project.domain.notification.NotificationHistory
 import com.yedongsoon.example_project.domain.notification.NotificationHistoryRepository
 import com.yedongsoon.example_project.presentation.handler.model.TestNotificationRequest
 import org.springframework.data.domain.Page
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -48,7 +47,7 @@ class NotificationCommandService(
     }
 
     suspend fun readNotification(notificationNo: Int) {
-        notificationHistoryRepository.findByIdOrNull(notificationNo)?.let {
+        notificationHistoryRepository.findByNotificationNoAndIsDeletedFalse(notificationNo)?.let {
             it.read()
             notificationHistoryRepository.save(it)
         }
@@ -78,6 +77,6 @@ class NotificationCommandService(
     }
 
     fun getNotifications(param: NotificationSearchParam): Page<NotificationHistory> {
-        return notificationHistoryRepository.findByAccountNoAndIsDeletedFalseOrderByMessagedAtDesc(param.memberNo, param.pageRequest)
+        return notificationHistoryRepository.findByAccountNoOrderByMessagedAtDesc(param.memberNo, param.pageRequest)
     }
 }

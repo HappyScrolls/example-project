@@ -8,6 +8,7 @@ data class NotificationResponse(
         val message: String,
         val path: String?,
         val parameter: Any?,
+        val isRead: Boolean,
         val messagedAt: LocalDateTime,
 ) {
     companion object {
@@ -16,6 +17,7 @@ data class NotificationResponse(
                 message = notificationHistory.message,
                 path = notificationHistory.path,
                 parameter = notificationHistory.parameter,
+                isRead = notificationHistory.isDeleted,
                 messagedAt = notificationHistory.messagedAt,
         )
     }

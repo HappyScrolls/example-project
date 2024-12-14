@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface NotificationHistoryRepository : JpaRepository<NotificationHistory, Int> {
     fun findByNotificationNoAndIsDeletedFalse(no: Int): NotificationHistory?
-    fun findByAccountNoAndIsDeletedFalseOrderByMessagedAtDesc(no: Int, pageRequest: Pageable): Page<NotificationHistory>
+    fun findByAccountNoOrderByMessagedAtDesc(no: Int, pageRequest: Pageable): Page<NotificationHistory>
 }
