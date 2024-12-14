@@ -16,7 +16,7 @@ class NotificationRouter(private val notificationHandler: NotificationHandler) {
             (accept(MediaType.APPLICATION_JSON) and "/notification").nest {
                 PATCH("/fcm-key", notificationHandler::refreshFcmKey)
                 POST("/test", notificationHandler::testNotification)
-                DELETE("/{notificationId}", notificationHandler::readNotification)
+                DELETE("/{notificationNo}", notificationHandler::readNotification)
                 GET("", notificationHandler::getNotifications)
             }
         }
