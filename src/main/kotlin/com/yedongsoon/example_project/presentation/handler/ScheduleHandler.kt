@@ -1,6 +1,7 @@
 package com.yedongsoon.example_project.presentation.handler
 
 import com.yedongsoon.example_project.application.couple.CoupleQueryService
+import com.yedongsoon.example_project.application.exception.InvalidArgumentException
 import com.yedongsoon.example_project.application.schedule.ScheduleCommandService
 import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
@@ -26,7 +27,7 @@ class ScheduleHandler(
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<ScheduleCreateRequest>()
                 ?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException() // TODO : 커스텀 예외 변경 필요
+                ?: throw InvalidArgumentException() // TODO : 커스텀 예외 변경 필요
 
         scheduleCommandService.createSchedule(command)
         ServerResponse.noContent().buildAndAwait()
@@ -44,7 +45,7 @@ class ScheduleHandler(
     suspend fun readScheduleDetail(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val scheduleNo = request.pathVariable("scheduleNo").toIntOrNull()
-                ?: throw IllegalArgumentException("Invalid or missing 'scheduleNo' path variable")
+                ?: throw InvalidArgumentException("Invalid or missing 'scheduleNo' path variable")
         val result = scheduleQueryService.getScheduleByScheduleNo(memberHeader.no, scheduleNo)
         ServerResponse.ok().bodyValueAndAwait(ScheduleDetailResponse.from(result))
     }
@@ -87,7 +88,7 @@ class ScheduleHandler(
     suspend fun changeStatus(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val scheduleNo = request.intPathVariable("scheduleNo")
         val status = request.queryParamOrNull("status")
-                ?: throw IllegalArgumentException("Invalid or missing 'status' path variable")
+                ?: throw InvalidArgumentException("Invalid or missing 'status' path variable")
 
         scheduleCommandService.changeStatus(scheduleNo, status)
         ServerResponse.ok().buildAndAwait()
@@ -104,7 +105,7 @@ class ScheduleHandler(
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<ScheduleModifyRequestCreateDto>()
                 ?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         scheduleCommandService.createScheduleModifyRequest(command)
         ServerResponse.noContent().buildAndAwait()
@@ -115,7 +116,7 @@ class ScheduleHandler(
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<ScheduleModifyRequest>()
                 ?.toCommand(scheduleNo, memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         scheduleCommandService.modifySchedule(command)
         ServerResponse.noContent().buildAndAwait()

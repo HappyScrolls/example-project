@@ -3,6 +3,7 @@ package com.yedongsoon.example_project.presentation.handler
 
 import com.yedongsoon.example_project.application.couple.CoupleCommandService
 import com.yedongsoon.example_project.application.couple.CoupleQueryService
+import com.yedongsoon.example_project.application.exception.InvalidArgumentException
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
 import com.yedongsoon.example_project.presentation.handler.model.*
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ class CoupleHandler(
         val memberHeader = request.extractMemberCodeHeader()
 
         val command = request.awaitBodyOrNull<CoupleCreateRequest>()?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         coupleCommandService.createCouple(command)
 
@@ -44,7 +45,7 @@ class CoupleHandler(
         val memberHeader = request.extractMemberCodeHeader()
 
         val command = request.awaitBodyOrNull<CoupleInfoCreateRequest>()?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         coupleCommandService.createCoupleInfo(command)
 
@@ -55,7 +56,7 @@ class CoupleHandler(
         val memberHeader = request.extractMemberCodeHeader()
 
         val command = request.awaitBodyOrNull<CoupleInfoModifyRequest>()?.toCommand()
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         coupleCommandService.modifyCoupleInfo(memberHeader.no, command)
 

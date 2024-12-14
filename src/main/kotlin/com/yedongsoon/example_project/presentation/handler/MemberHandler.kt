@@ -1,5 +1,6 @@
 package com.yedongsoon.example_project.presentation.handler
 
+import com.yedongsoon.example_project.application.exception.InvalidArgumentException
 import com.yedongsoon.example_project.application.member.MemberCommandService
 import com.yedongsoon.example_project.application.member.MemberQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
@@ -19,7 +20,7 @@ class MemberHandler(
     suspend fun createAdditional(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<MemberAdditionalInfoRequest>()?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         memberCommandService.createAdditional(command)
         ServerResponse.ok().buildAndAwait()
@@ -34,7 +35,7 @@ class MemberHandler(
     suspend fun modifyMemberInfo(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<MemberInfoModifyRequest>()?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         memberCommandService.modifyMemberInfo(command)
         ServerResponse.ok().buildAndAwait()

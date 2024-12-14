@@ -1,5 +1,6 @@
 package com.yedongsoon.example_project.presentation.handler
 
+import com.yedongsoon.example_project.application.exception.InvalidArgumentException
 import com.yedongsoon.example_project.application.notification.NotificationCommandService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
 import com.yedongsoon.example_project.presentation.extension.intPathVariable
@@ -21,7 +22,7 @@ class NotificationHandler(
     suspend fun refreshFcmKey(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val memberHeader = request.extractMemberCodeHeader()
         val command = request.awaitBodyOrNull<FcmKeyRefreshRequest>()?.toCommand(memberHeader.no)
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         notificationCommandService.refreshFcmKey(command)
 
@@ -30,7 +31,7 @@ class NotificationHandler(
 
     suspend fun testNotification(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
         val request = request.awaitBodyOrNull<TestNotificationRequest>()
-                ?: throw IllegalArgumentException()
+                ?: throw InvalidArgumentException()
 
         val result = notificationCommandService.testNotification(request)
 

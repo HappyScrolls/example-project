@@ -6,3 +6,6 @@ abstract class AbstractException(
         val status: HttpStatus,
         override val message: String
 ) : RuntimeException(message)
+
+class InvalidArgumentException(message: String? = null) : AbstractException(HttpStatus.BAD_REQUEST, message
+        ?: "InvalidArgumentException")
