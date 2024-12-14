@@ -101,7 +101,7 @@ Content-Type: application/json
 
 
 ### 알림 조회
-POST localhost:8084/notification?page=1&size=10
+GET http://localhost:8084/notification?page=1&size=10
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
 

@@ -48,7 +48,6 @@ class NotificationHandler(
         val memberHeader = request.extractMemberCodeHeader()
         val page = request.intQueryParam("page")
         val size = request.intQueryParam("size")
-        val notificationNo = request.intPathVariable("notificationNo")
         val param = NotificationSearchRequest(page, size).toParam(memberHeader.no)
         notificationCommandService.getNotifications(param).let { notification ->
             ServerResponse.ok().bodyValueAndAwait(notification.map { NotificationResponse.of(it) })
