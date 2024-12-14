@@ -5,6 +5,7 @@ import com.yedongsoon.example_project.application.exception.ScheduleDuplicatedEx
 import com.yedongsoon.example_project.application.exception.ScheduleNotFoundException
 import com.yedongsoon.example_project.application.notification.NotificationCommandService
 import com.yedongsoon.example_project.application.notification.model.FcmNotificationSendCommand
+import com.yedongsoon.example_project.domain.notification.NotificationCreateCommand
 import com.yedongsoon.example_project.domain.schedule.Schedule
 import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequest
 import com.yedongsoon.example_project.domain.schedule.ScheduleModifyRequestRepository
@@ -28,12 +29,17 @@ class ScheduleCommandService(
         if (scheduleRepository.existsByDuplicateSchedule(command.scheduleStartAt, command.scheduleEndAt, command.accountNo, partnerNo)) {
             throw ScheduleDuplicatedException("시간대에 겹치는 일정이 존재합니다")
         }
-        scheduleRepository.save(Schedule.create(command))
+        val scheduleNo = scheduleRepository.save(Schedule.create(command)).scheduleNo
         notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
                 memberNo = partnerNo,
                 title = "일정 등록 알림",
                 body = "상대방이 일정을 등록했씁니다.",
                 uri = "/main"
+        ))
+        notificationCommandService.createNotification(NotificationCreateCommand(
+                accountNo = partnerNo,
+                message = "일정을 등록했씁니다.",
+                path = "/schedule/$scheduleNo"
         ))
     }
 

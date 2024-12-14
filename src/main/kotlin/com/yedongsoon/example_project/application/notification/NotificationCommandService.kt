@@ -6,13 +6,20 @@ import com.google.firebase.messaging.Notification
 import com.yedongsoon.example_project.application.exception.MemberNotFoundException
 import com.yedongsoon.example_project.application.notification.model.FcmKeyRefreshCommand
 import com.yedongsoon.example_project.application.notification.model.FcmNotificationSendCommand
+import com.yedongsoon.example_project.application.notification.model.NotificationSearchParam
 import com.yedongsoon.example_project.domain.member.MemberRepository
+import com.yedongsoon.example_project.domain.notification.NotificationCreateCommand
+import com.yedongsoon.example_project.domain.notification.NotificationHistory
+import com.yedongsoon.example_project.domain.notification.NotificationHistoryRepository
 import com.yedongsoon.example_project.presentation.handler.model.TestNotificationRequest
+import org.springframework.data.domain.Page
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class NotificationCommandService(
         private val memberRepository: MemberRepository,
+        private val notificationHistoryRepository: NotificationHistoryRepository,
         private val firebaseMessaging: FirebaseMessaging,
 ) {
     fun refreshFcmKey(command: FcmKeyRefreshCommand) {
@@ -40,9 +47,15 @@ class NotificationCommandService(
         }
     }
 
+    suspend fun readNotification(notificationNo: Int) {
+        notificationHistoryRepository.findByIdOrNull(notificationNo)?.let {
+            it.read()
+            notificationHistoryRepository.save(it)
+        }
+    }
+
     fun testNotification(request: TestNotificationRequest): String {
         val fcmKey = memberRepository.findByNo(request.memberNo)?.fcmKey
-        println("fcmKey = ${fcmKey}")
         if (fcmKey != null) {
             val notification = Notification.builder()
                     .setTitle(request.title)
@@ -55,10 +68,16 @@ class NotificationCommandService(
                     .build()
 
             val response = firebaseMessaging.send(message)
-            println("!!!!")
-            println(response)
             return response
         }
         return ""
+    }
+
+    suspend fun createNotification(command: NotificationCreateCommand) {
+        notificationHistoryRepository.save(NotificationHistory.create(command))
+    }
+
+    fun getNotifications(param: NotificationSearchParam): Page<NotificationHistory> {
+        return notificationHistoryRepository.findByAccountNoAndIsDeletedFalseOrderByMessagedAtDesc(param.memberNo, param.pageRequest)
     }
 }
