@@ -104,3 +104,16 @@ Content-Type: application/json
 GET https://api.togethery.store/notification?page=0&size=2
 Content-Type: application/json
 Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
+
+
+{
+  "busyLevel": "여유",
+  "groupGenderType": "혼성",
+  "isCommon": false
+  "scheduleEndAt": "2024-12-15T04:00",
+  "scheduleLocation": "sadf",
+  "scheduleName": "asdf",
+  "scheduleNo": 133,
+  "scheduleStartAt": "2024-12-15T00:00:00",
+  "scheduleWith": "asdf",
+}

@@ -2,6 +2,8 @@ package com.yedongsoon.example_project.domain.notification
 
 import com.yedongsoon.example_project.domain.extension.AnyToJsonConverter
 import com.yedongsoon.example_project.domain.extension.BooleanToYNConverter
+import com.yedongsoon.example_project.domain.extension.NotificationHistoryTypeConverter
+import com.yedongsoon.example_project.enums.NotificationHistoryType
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -25,6 +27,10 @@ class NotificationHistory(
         @Convert(converter = AnyToJsonConverter::class)
         @Column(name = "parameter")
         var parameter: Any? = null,
+
+        @Convert(converter = NotificationHistoryTypeConverter::class)
+        @Column(name = "history_type")
+        var historyType: NotificationHistoryType,
 ) {
     @Column(name = "messaged_at")
     val messagedAt: LocalDateTime = LocalDateTime.now()
@@ -44,6 +50,7 @@ class NotificationHistory(
                 message = command.message,
                 path = command.path,
                 parameter = command.parameter,
+                historyType = command.historyType,
         )
     }
 }

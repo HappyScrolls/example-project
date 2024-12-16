@@ -51,6 +51,12 @@ class ScheduleModifyRequest(
         @Column(name = "schedule_at")
         val scheduleAt: LocalDate,
 ) {
+
+    @Convert(converter = BooleanToYNConverter::class)
+    @Column(name = "is_accepted")
+    var isAccepted: Boolean = false
+        private set
+
     @Convert(converter = BooleanToYNConverter::class)
     @Column(name = "deleted_yn")
     var isDeleted: Boolean = false
@@ -58,6 +64,10 @@ class ScheduleModifyRequest(
 
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now()
+
+    fun accept() {
+        this.isAccepted = true
+    }
 
     companion object {
         // 일정 등록 (command -> Schedule)

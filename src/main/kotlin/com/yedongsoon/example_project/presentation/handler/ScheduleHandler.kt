@@ -7,10 +7,7 @@ import com.yedongsoon.example_project.application.schedule.ScheduleQueryService
 import com.yedongsoon.example_project.presentation.extension.extractMemberCodeHeader
 import com.yedongsoon.example_project.presentation.extension.intPathVariable
 import com.yedongsoon.example_project.presentation.extension.localDateQueryParam
-import com.yedongsoon.example_project.presentation.handler.model.ScheduleCreateRequest
-import com.yedongsoon.example_project.presentation.handler.model.ScheduleDetailResponse
-import com.yedongsoon.example_project.presentation.handler.model.ScheduleModifyRequest
-import com.yedongsoon.example_project.presentation.handler.model.ScheduleModifyRequestCreateDto
+import com.yedongsoon.example_project.presentation.handler.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
@@ -120,5 +117,12 @@ class ScheduleHandler(
 
         scheduleCommandService.modifySchedule(command)
         ServerResponse.noContent().buildAndAwait()
+    }
+
+    suspend fun getScheduleModifyRequest(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+        val memberHeader = request.extractMemberCodeHeader()
+        val summary = scheduleCommandService.getScheduleModifyRequest(scheduleNo)
+        ServerResponse.ok().bodyValueAndAwait(ScheduleModifyRequestResponse.of(summary))
     }
 }
