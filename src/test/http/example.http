@@ -115,5 +115,11 @@ Member-Code: eyJubyI6MSwibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
   "scheduleName": "asdf",
   "scheduleNo": 133,
   "scheduleStartAt": "2024-12-15T00:00:00",
-  "scheduleWith": "asdf",
+  "scheduleWith": "asdf"
 }
+
+
+### 알림 조회
+GET https://api.togethery.store/schedule/modify-request/132
+Content-Type: application/json
+Member-Code: eyJubyI6MywibmFtZSI6Im5hbWUiLCJhY2NvdW50IjoiYWNjb3VudCJ9
