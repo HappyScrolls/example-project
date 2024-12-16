@@ -35,13 +35,13 @@ class ScheduleCommandService(
         notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
                 memberNo = partnerNo,
                 title = "일정 등록 알림",
-                body = "상대방이 일정을 등록했씁니다.",
+                body = "상대방이 일정을 등록했습니다",
                 uri = "/calendar/${schedule.scheduleAt}"
         ))
         notificationCommandService.createNotification(NotificationCreateCommand(
                 historyType = NotificationHistoryType.SCHEDULE_CREATE,
                 accountNo = partnerNo,
-                message = "상대방이 일정을 등록했습니다.",
+                message = "상대방이 일정을 등록했습니다",
                 path = "/calendar/${schedule.scheduleAt}"
         ))
     }
@@ -73,14 +73,14 @@ class ScheduleCommandService(
 
         notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
                 memberNo = schedule.accountNo,
-                title = "일정 등록 알림",
-                body = "상대방이 일정을 등록했씁니다.",
+                title = "일정 수정 요청 알림",
+                body = "일정 수정을 요청했습니다",
                 uri = "/edit-schedule/${schedule.scheduleNo}"
         ))
         notificationCommandService.createNotification(NotificationCreateCommand(
                 historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST,
                 accountNo = schedule.accountNo,
-                message = "일정 수정을 요청했습니다.",
+                message = "일정 수정을 요청했습니다",
                 path = "/edit-schedule/${schedule.scheduleNo}"
         ))
     }
