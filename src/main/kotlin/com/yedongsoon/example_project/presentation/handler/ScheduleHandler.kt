@@ -125,4 +125,11 @@ class ScheduleHandler(
         val summary = scheduleCommandService.getScheduleModifyRequest(scheduleNo)
         ServerResponse.ok().bodyValueAndAwait(ScheduleModifyRequestResponse.of(summary))
     }
+
+    suspend fun acceptScheduleModifyRequest(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val scheduleNo = request.intPathVariable("scheduleNo")
+        val memberHeader = request.extractMemberCodeHeader()
+        scheduleCommandService.acceptScheduleModifyRequest(scheduleNo)
+        ServerResponse.noContent().buildAndAwait()
+    }
 }

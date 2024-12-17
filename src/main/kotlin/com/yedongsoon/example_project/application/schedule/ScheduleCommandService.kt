@@ -75,13 +75,13 @@ class ScheduleCommandService(
                 memberNo = schedule.accountNo,
                 title = "일정 수정 요청 알림",
                 body = "일정 수정을 요청했습니다",
-                uri = "/edit-schedule/${schedule.scheduleNo}"
+                uri = "/modify-request/${schedule.scheduleNo}"
         ))
         notificationCommandService.createNotification(NotificationCreateCommand(
                 historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST,
                 accountNo = schedule.accountNo,
                 message = "일정 수정을 요청했습니다",
-                path = "/edit-schedule/${schedule.scheduleNo}"
+                path = "/modify-request/${schedule.scheduleNo}"
         ))
     }
 
@@ -91,30 +91,35 @@ class ScheduleCommandService(
     }
 
     suspend fun modifySchedule(command: ScheduleModifyCommand) {
-        val (schedule, partnerNo) = scheduleRepository.findByIdOrNull(command.scheduleNo)?.let {
+        scheduleRepository.findByIdOrNull(command.scheduleNo)?.let {
             val partnerNo = coupleQueryService.getLover(command.accountNo).no
             if (scheduleRepository.existsByDuplicateScheduleForModify(command.scheduleStartAt, command.scheduleEndAt, command.accountNo, partnerNo, command.scheduleNo)) {
                 throw ScheduleDuplicatedException("시간대에 겹치는 일정이 존재합니다")
             }
             it.updateSchedule(command)
-            Pair(scheduleRepository.save(it), partnerNo)
+            scheduleRepository.save(it)
         } ?: throw ScheduleNotFoundException("존재하지 않습니다")
+    }
 
-        scheduleModifyRequestRepository.findByIdOrNull(command.scheduleNo)?.also {
+    suspend fun acceptScheduleModifyRequest(scheduleNo: Int) {
+        scheduleModifyRequestRepository.findByIdOrNull(scheduleNo)?.also {
             it.accept()
             scheduleModifyRequestRepository.save(it)
+            modifySchedule(ScheduleModifyCommand.of(it))
+
             notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
-                    memberNo = partnerNo,
+                    memberNo = it.requestAccountNo,
                     title = "일정 수정 알림",
                     body = "수정 요청한 일정을 상대방이 수정했습니다",
-                    uri = "/calendar/${schedule.scheduleAt}"
+                    uri = "/calendar/${it.scheduleAt}"
             ))
             notificationCommandService.createNotification(NotificationCreateCommand(
                     historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST_ACCEPTED,
-                    accountNo = partnerNo,
+                    accountNo = it.requestAccountNo,
                     message = "수정 요청한 일정을 상대방이 수정했습니다",
-                    path = "/calendar/${schedule.scheduleAt}"
+                    path = "/calendar/${it.scheduleAt}"
             ))
         }
+
     }
 }
