@@ -13,7 +13,7 @@ data class ScheduleModifyRequest(
 
         val scheduleWith: String,
 
-        val groupGenderType: String,
+        val genderType: String,
 
         val scheduleStartAt: LocalDateTime,
 
@@ -29,7 +29,7 @@ data class ScheduleModifyRequest(
             scheduleName = scheduleName,
             scheduleLocation = scheduleLocation,
             scheduleWith = scheduleWith,
-            groupGenderType = groupGenderType,
+            groupGenderType = genderType,
             scheduleStartAt = scheduleStartAt,
             scheduleEndAt = scheduleEndAt,
             isCommon = isCommon,

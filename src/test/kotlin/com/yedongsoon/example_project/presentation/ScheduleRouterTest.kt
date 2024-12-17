@@ -67,11 +67,10 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                 scheduleName = "Meeting",
                 scheduleLocation = "Office",
                 scheduleWith = "Colleagues",
-                groupGenderType = "MIXED",
+                genderType = "MIXED",
                 scheduleStartAt = LocalDateTime.now(),
                 scheduleEndAt = LocalDateTime.now().plusHours(2),
                 isCommon = false,
-                scheduleAt = LocalDate.now()
         )
 
         coJustRun { scheduleCommandService.createSchedule(any()) }
@@ -97,7 +96,6 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                                         fieldWithPath("scheduleStartAt").type(JsonFieldType.ARRAY).description("일정 시작 시간"),
                                                         fieldWithPath("scheduleEndAt").type(JsonFieldType.ARRAY).description("일정 종료 시간"),
                                                         fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("공유 여부"),
-                                                        fieldWithPath("scheduleAt").type(JsonFieldType.ARRAY).description("일정 날짜")
                                                 ).build()
                                 )
                         )
@@ -117,6 +115,7 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                 status = "ONGOING",
                 scheduleStartAt = LocalDateTime.now(),
                 scheduleEndAt = LocalDateTime.now().plusHours(1),
+                genderType = "남자",
                 isCommon = false
         )
 
@@ -243,11 +242,10 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                 scheduleName = "Workshop",
                 scheduleLocation = "Conference Room",
                 scheduleWith = "Team",
-                groupGenderType = "Male",
+                genderType = "Male",
                 scheduleStartAt = LocalDateTime.now(),
                 scheduleEndAt = LocalDateTime.now().plusHours(3),
                 isCommon = false,
-                scheduleAt = LocalDate.now()
         )
 
         coJustRun { scheduleCommandService.createScheduleModifyRequest(any()) }
@@ -271,10 +269,9 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                                         fieldWithPath("scheduleName").type(JsonFieldType.STRING).description("일정 위치"),
                                                         fieldWithPath("scheduleLocation").type(JsonFieldType.STRING).description("일정 위치"),
                                                         fieldWithPath("scheduleWith").type(JsonFieldType.STRING).description("일정 위치"),
-                                                        fieldWithPath("groupGenderType").type(JsonFieldType.STRING).description("일정 위치"),
+                                                        fieldWithPath("genderType").type(JsonFieldType.STRING).description("일정 위치"),
                                                         fieldWithPath("scheduleStartAt").type(JsonFieldType.ARRAY).description("함께하는 사람"),
                                                         fieldWithPath("scheduleEndAt").type(JsonFieldType.ARRAY).description("바쁨 정도"),
-                                                        fieldWithPath("scheduleAt").type(JsonFieldType.ARRAY).description("바쁨 정도"),
                                                         fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("일정 상태")).build()
                                 )
                         )
@@ -289,11 +286,10 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                 scheduleName = "Meeting",
                 scheduleLocation = "Office",
                 scheduleWith = "Colleagues",
-                groupGenderType = "MIXED",
+                genderType = "MIXED",
                 scheduleStartAt = LocalDateTime.now(),
                 scheduleEndAt = LocalDateTime.now().plusHours(2),
                 isCommon = false,
-                scheduleAt = LocalDate.now()
         )
         val scheduleNo = 1
         coJustRun { scheduleCommandService.modifySchedule(any()) }
@@ -318,11 +314,10 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
                                                         fieldWithPath("scheduleLocation").type(JsonFieldType.STRING).description("일정 위치"),
                                                         fieldWithPath("scheduleWith").type(JsonFieldType.STRING).description("일정을 함께 하는 사람"),
                                                         fieldWithPath("busyLevel").type(JsonFieldType.STRING).description("바쁨 정도"),
-                                                        fieldWithPath("groupGenderType").type(JsonFieldType.STRING).description("성별 그룹 타입"),
+                                                        fieldWithPath("genderType").type(JsonFieldType.STRING).description("성별 그룹 타입"),
                                                         fieldWithPath("scheduleStartAt").type(JsonFieldType.ARRAY).description("일정 시작 시간"),
                                                         fieldWithPath("scheduleEndAt").type(JsonFieldType.ARRAY).description("일정 종료 시간"),
                                                         fieldWithPath("isCommon").type(JsonFieldType.BOOLEAN).description("공유 여부"),
-                                                        fieldWithPath("scheduleAt").type(JsonFieldType.ARRAY).description("일정 날짜")
                                                 ).build()
                                 )
                         )
@@ -330,4 +325,3 @@ class ScheduleRouterTest(private val context: ApplicationContext) {
     }
 
 }
-
