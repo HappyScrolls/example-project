@@ -45,9 +45,13 @@ class Couple(
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     fun createInfo(command: CoupleInfoCreateCommand) {
+        val (assignNickNameA, assignNickNameB) =
+                if (command.memberNo == accountNoA) Pair(command.nickNameA, command.nickNameB)
+                else Pair(command.nickNameB, command.nickNameA)
+
         name = command.name
-        nickNameA = command.nickNameA
-        nickNameB = command.nickNameB
+        nickNameA = assignNickNameA
+        nickNameB = assignNickNameB
         startedAt = command.startedAt
         coupleImg = command.coupleImg
     }
