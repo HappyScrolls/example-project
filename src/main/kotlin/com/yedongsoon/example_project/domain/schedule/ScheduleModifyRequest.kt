@@ -46,7 +46,7 @@ class ScheduleModifyRequest(
 
         @Convert(converter = BooleanToYNConverter::class)
         @Column(name = "is_common")
-        val isCommon: Boolean? = null,
+        val isCommon: Boolean,
 
         @Column(name = "schedule_at")
         val scheduleAt: LocalDate,
@@ -54,7 +54,7 @@ class ScheduleModifyRequest(
 
     @Convert(converter = BooleanToYNConverter::class)
     @Column(name = "is_accepted")
-    var isAccepted: Boolean = false
+    var isAccepted: Boolean? = null
         private set
 
     @Convert(converter = BooleanToYNConverter::class)
