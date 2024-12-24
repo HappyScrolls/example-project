@@ -54,7 +54,7 @@ class ScheduleModifyRequest(
 
     @Convert(converter = BooleanToYNConverter::class)
     @Column(name = "is_accepted")
-    var isAccepted: Boolean = false
+    var isAccepted: Boolean? = null
         private set
 
     @Convert(converter = BooleanToYNConverter::class)
@@ -67,6 +67,10 @@ class ScheduleModifyRequest(
 
     fun accept() {
         this.isAccepted = true
+    }
+
+    fun reject() {
+        this.isAccepted = false
     }
 
     companion object {

@@ -120,16 +120,23 @@ class ScheduleHandler(
     }
 
     suspend fun getScheduleModifyRequest(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
-        val scheduleNo = request.intPathVariable("scheduleNo")
+        val requestNo = request.intPathVariable("requestNo")
         val memberHeader = request.extractMemberCodeHeader()
-        val summary = scheduleCommandService.getScheduleModifyRequest(scheduleNo)
+        val summary = scheduleCommandService.getScheduleModifyRequest(requestNo)
         ServerResponse.ok().bodyValueAndAwait(ScheduleModifyRequestResponse.of(summary))
     }
 
     suspend fun acceptScheduleModifyRequest(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
-        val scheduleNo = request.intPathVariable("scheduleNo")
+        val requestNo = request.intPathVariable("requestNo")
         val memberHeader = request.extractMemberCodeHeader()
-        scheduleCommandService.acceptScheduleModifyRequest(scheduleNo)
+        scheduleCommandService.acceptScheduleModifyRequest(requestNo)
+        ServerResponse.noContent().buildAndAwait()
+    }
+
+    suspend fun rejectScheduleModifyRequest(request: ServerRequest): ServerResponse = withContext(Dispatchers.IO) {
+        val requestNo = request.intPathVariable("requestNo")
+        val memberHeader = request.extractMemberCodeHeader()
+        scheduleCommandService.rejectScheduleModifyRequest(requestNo)
         ServerResponse.noContent().buildAndAwait()
     }
 }

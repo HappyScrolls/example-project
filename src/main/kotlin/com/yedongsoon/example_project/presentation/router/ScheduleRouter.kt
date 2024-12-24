@@ -34,11 +34,11 @@ class ScheduleRouter(private val scheduleHandler: ScheduleHandler) {
                 PUT("/{scheduleNo}/common-schedule", scheduleHandler::setToCommonSchedule)
                 (accept(MediaType.APPLICATION_JSON) and "/modify-request").nest {
                     POST("", scheduleHandler::createScheduleModifyRequest)
-                    GET("{scheduleNo}", scheduleHandler::getScheduleModifyRequest)
-                    PUT("{scheduleNo}", scheduleHandler::acceptScheduleModifyRequest)
+                    GET("{requestNo}", scheduleHandler::getScheduleModifyRequest)
+                    PUT("{requestNo}", scheduleHandler::acceptScheduleModifyRequest)
+                    PUT("{requestNo}/reject", scheduleHandler::rejectScheduleModifyRequest)
                 }
             }
-
         }
     }
 }
