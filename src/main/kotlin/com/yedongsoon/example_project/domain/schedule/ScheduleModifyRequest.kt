@@ -46,7 +46,7 @@ class ScheduleModifyRequest(
 
         @Convert(converter = BooleanToYNConverter::class)
         @Column(name = "is_common")
-        val isCommon: Boolean,
+        val isCommon: Boolean? = null,
 
         @Column(name = "schedule_at")
         val scheduleAt: LocalDate,
@@ -67,6 +67,10 @@ class ScheduleModifyRequest(
 
     fun accept() {
         this.isAccepted = true
+    }
+
+    fun reject() {
+        this.isAccepted = false
     }
 
     companion object {

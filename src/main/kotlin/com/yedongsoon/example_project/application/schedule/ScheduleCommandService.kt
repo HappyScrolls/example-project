@@ -34,7 +34,7 @@ class ScheduleCommandService(
         val schedule = scheduleRepository.save(Schedule.create(command))
         notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
                 memberNo = partnerNo,
-                title = "일정 등록 알림",
+                title = "일정 등록",
                 body = "상대방이 일정을 등록했습니다",
                 uri = "/calendar/${schedule.scheduleAt}"
         ))
@@ -66,27 +66,27 @@ class ScheduleCommandService(
     }
 
     suspend fun createScheduleModifyRequest(command: ScheduleModifyRequestCreateCommand) {
-        val schedule = scheduleRepository.findByIdOrNull(command.scheduleNo)
+        val accountNo = scheduleRepository.findByIdOrNull(command.scheduleNo)?.accountNo
                 ?: throw ScheduleNotFoundException("스케줄을 찾을 수 없습니다.")
         scheduleModifyRequestRepository.findByIdOrNull(command.scheduleNo)?.let { scheduleModifyRequestRepository.delete(it) }
-        scheduleModifyRequestRepository.save(ScheduleModifyRequest.create(command, schedule.accountNo))
+        val requestNo = scheduleModifyRequestRepository.save(ScheduleModifyRequest.create(command, accountNo)).no
 
         notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
-                memberNo = schedule.accountNo,
-                title = "일정 수정 요청 알림",
+                memberNo = accountNo,
+                title = "일정 수정 요청",
                 body = "일정 수정을 요청했습니다",
-                uri = "/modify-request/${schedule.scheduleNo}"
+                uri = "/modify-request/${requestNo}"
         ))
         notificationCommandService.createNotification(NotificationCreateCommand(
                 historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST,
-                accountNo = schedule.accountNo,
+                accountNo = accountNo,
                 message = "일정 수정을 요청했습니다",
-                path = "/modify-request/${schedule.scheduleNo}"
+                path = "/modify-request/${requestNo}"
         ))
     }
 
     suspend fun getScheduleModifyRequest(no: Int): ScheduleModifyRequest {
-        return scheduleModifyRequestRepository.findByScheduleNoAndIsAcceptedFalse(no)
+        return scheduleModifyRequestRepository.findByNoAndIsAcceptedIsNotNull(no)
                 ?: throw ScheduleModifyRequestNotFoundException("수정 요청이 존재하지 않습니다")
     }
 
@@ -101,25 +101,44 @@ class ScheduleCommandService(
         } ?: throw ScheduleNotFoundException("존재하지 않습니다")
     }
 
-    suspend fun acceptScheduleModifyRequest(scheduleNo: Int) {
-        scheduleModifyRequestRepository.findByIdOrNull(scheduleNo)?.also {
+    suspend fun acceptScheduleModifyRequest(no: Int) {
+        scheduleModifyRequestRepository.findByIdOrNull(no)?.also {
             it.accept()
             scheduleModifyRequestRepository.save(it)
             modifySchedule(ScheduleModifyCommand.of(it))
 
             notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
                     memberNo = it.requestAccountNo,
-                    title = "일정 수정 알림",
-                    body = "수정 요청한 일정을 상대방이 수정했습니다",
+                    title = "요청 수락",
+                    body = "수정 요청한 일정을 상대방이 수락했습니다",
                     uri = "/calendar/${it.scheduleAt}"
             ))
             notificationCommandService.createNotification(NotificationCreateCommand(
                     historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST_ACCEPTED,
                     accountNo = it.requestAccountNo,
-                    message = "수정 요청한 일정을 상대방이 수정했습니다",
+                    message = "수정 요청한 일정을 상대방이 수락했습니다",
                     path = "/calendar/${it.scheduleAt}"
             ))
         }
+    }
 
+    suspend fun rejectScheduleModifyRequest(no: Int) {
+        scheduleModifyRequestRepository.findByIdOrNull(no)?.also {
+            it.reject()
+            scheduleModifyRequestRepository.save(it)
+
+            notificationCommandService.sendFcmNotification(FcmNotificationSendCommand(
+                    memberNo = it.requestAccountNo,
+                    title = "요청 거절",
+                    body = "수정 요청을 상대방이 거절했습니다",
+                    uri = "/calendar/${it.scheduleAt}"
+            ))
+            notificationCommandService.createNotification(NotificationCreateCommand(
+                    historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST_ACCEPTED,
+                    accountNo = it.requestAccountNo,
+                    message = "수정 요청을 상대방이 거절했습니다",
+                    path = "/calendar/${it.scheduleAt}"
+            ))
+        }
     }
 }
