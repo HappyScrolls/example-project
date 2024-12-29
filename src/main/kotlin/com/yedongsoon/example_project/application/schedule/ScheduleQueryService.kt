@@ -28,7 +28,7 @@ class ScheduleQueryService(
 
     // 일정 상세 조회
     fun getScheduleByScheduleNo(accountNo: Int, scheduleNo: Int): Schedule {
-        return scheduleRepository.findByAccountNoAndScheduleNo(accountNo, scheduleNo)
+        return scheduleRepository.findByScheduleNo(scheduleNo)
                 ?: throw ScheduleNotFoundException("일정을 찾을 수 없습니다")
     }
 

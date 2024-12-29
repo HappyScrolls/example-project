@@ -9,6 +9,6 @@ interface ScheduleRepository : JpaRepository<Schedule, Int>, ScheduleRepositoryC
     fun findByAccountNoInAndScheduleAtAndIsCommonIsTrue(accountNos: List<Int>, scheduleAt: LocalDate): List<Schedule>
 
     // 일정 상세 조회
-    fun findByAccountNoAndScheduleNo(accountNo: Int, scheduleNo: Int): Schedule?
+    fun findByScheduleNo(scheduleNo: Int): Schedule?
 
 }

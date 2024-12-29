@@ -134,7 +134,7 @@ class ScheduleCommandService(
                     uri = "/calendar/${it.scheduleAt}"
             ))
             notificationCommandService.createNotification(NotificationCreateCommand(
-                    historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST_ACCEPTED,
+                    historyType = NotificationHistoryType.SCHEDULE_MODIFY_REQUEST_REJECTED,
                     accountNo = it.requestAccountNo,
                     message = "수정 요청을 상대방이 거절했습니다",
                     path = "/calendar/${it.scheduleAt}"
