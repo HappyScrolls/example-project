@@ -28,7 +28,7 @@ class NotificationCommandService(
         } ?: throw MemberNotFoundException("회원 정보가 없습니다.")
     }
 
-    suspend fun sendFcmNotification(command: FcmNotificationSendCommand) {
+    fun sendFcmNotification(command: FcmNotificationSendCommand) {
         val fcmKey = memberRepository.findByNo(command.memberNo)?.fcmKey
         if (fcmKey != null) {
             val notification = Notification.builder()
